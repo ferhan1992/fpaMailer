@@ -1,3 +1,4 @@
+package de.bht.fpa.mail.s819191.model.data;
 
 import java.io.File;
 import java.util.List;
