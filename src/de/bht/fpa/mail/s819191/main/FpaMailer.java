@@ -16,13 +16,13 @@ import javafx.stage.Stage;
  * @author Admin
  */
 public class FpaMailer extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/de/bht/fpa/mail/s819191/view/MainWindow.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.show();
     }
@@ -33,5 +33,5 @@ public class FpaMailer extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
