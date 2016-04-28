@@ -11,6 +11,7 @@ package de.bht.fpa.mail.s819191.model.appLogic;
  */
 public class test {
     private int x;
+    private int y;
   
     
 }
