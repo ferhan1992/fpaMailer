@@ -7,13 +7,10 @@ package de.bht.fpa.mail.s819191.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import de.bht.fpa.mail.s819191.model.data.Component;
-import javafx.event.Event;
-import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 
 /**
@@ -32,10 +29,12 @@ public class MainWindowController implements Initializable {
     
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO   
+        
     }
 
 }
