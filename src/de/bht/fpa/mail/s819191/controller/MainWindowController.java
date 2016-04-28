@@ -11,11 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import de.bht.fpa.mail.s819191.model.data.Component;
-import de.bht.fpa.mail.s819191.model.data.Folder;
-import java.io.File;
-import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
