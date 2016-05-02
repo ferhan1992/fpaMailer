@@ -14,6 +14,7 @@ import de.bht.fpa.mail.s819191.model.data.Component;
 import de.bht.fpa.mail.s819191.model.data.FileElement;
 import de.bht.fpa.mail.s819191.model.data.Folder;
 import java.io.File;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
@@ -33,11 +34,11 @@ public class MainWindowController implements Initializable {
     @FXML
     private TreeView<Component> dirTree;
 
-    private void treeConfig() {
+    private void configureTree() {
         TreeItem<Component> mainDir = new TreeItem<>(new Folder(ROOT_PATH, true), new ImageView(FOLDER_ICON));
-        mainDir.setExpanded(false);
-        mainDir.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent <Component> e) -> branchExpand(e));
-        mainDir.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent <Component> e) -> branchCollapse(e));
+        mainDir.setExpanded(true);
+        mainDir.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
+        mainDir.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
         dirTree.setRoot(mainDir);
         treeContent(mainDir);
     }
@@ -51,17 +52,17 @@ public class MainWindowController implements Initializable {
      *
      * @param x a TreeItem
      */
-    public void treeContent(final TreeItem x) {
+    public void treeContent(TreeItem x) {
+        x.getChildren().clear();
         File file = new File(((TreeItem<Component>) x).getValue().getPath());
         for (File y : file.listFiles()) {
             if (y.isDirectory()) {
-                if (y.listFiles() != null) {
-                    boolean isExpandable = true;
-                    TreeItem<Folder> z = new TreeItem<>(new Folder(y.getAbsoluteFile(), isExpandable), new ImageView(FOLDER_ICON));
+                if (y.list().length > 0) {
+                    TreeItem<Folder> z = new TreeItem<>(new Folder(y.getAbsoluteFile(), true), new ImageView(FOLDER_ICON));
                     x.getChildren().add(z);
-                } else if (y.listFiles() == null) {
-                    boolean isExpandable = false;
-                    TreeItem<Folder> z = new TreeItem<>(new Folder(y.getAbsoluteFile(), isExpandable), new ImageView(FOLDER_ICON));
+                }
+                if (y.list().length == 0) {
+                    TreeItem<Folder> z = new TreeItem<>(new Folder(y.getAbsoluteFile(), false), new ImageView(FOLDER_ICON));
                     x.getChildren().add(z);
                 }
             } else if (y.isFile()) {
@@ -70,20 +71,15 @@ public class MainWindowController implements Initializable {
             }
         }
     }
-    
-    public void branchExpand(TreeModificationEvent <Component> e){
-        treeContent(e.getTreeItem());
+
+    public void branchExpand(TreeModificationEvent<Component> e) {
+
     }
-    
-    private void branchCollapse(TreeModificationEvent <Component> e) {
-        TreeItem <Component> x = e.getSource();
-        if (x != null){
-            TreeItem <Component> y = x.getParent();
-            if (y != null){
-                y.getChildren().remove(x);
-            }
-        }
+
+    private void branchCollapse(TreeModificationEvent<Component> e) {
+
     }
+
     /**
      * Initializes the controller class.
      *
@@ -92,7 +88,7 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        treeConfig();
+        configureTree();
     }
 
 }
