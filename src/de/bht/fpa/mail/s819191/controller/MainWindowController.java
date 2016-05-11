@@ -14,12 +14,7 @@ import de.bht.fpa.mail.s819191.model.data.Component;
 import de.bht.fpa.mail.s819191.model.data.FileElement;
 import de.bht.fpa.mail.s819191.model.data.Folder;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
@@ -81,7 +76,7 @@ public class MainWindowController implements Initializable {
 
     public void showItems(final Folder f, final TreeItem parent) {
         loadContent(f).stream().forEach((com) -> {
-            File file = new File(com.getPath());
+            final File file = new File(com.getPath());
             if (com.getClass().getName().contains("Folder")) {
                 if (com.isExpandable()) {
                     TreeItem<Component> z = new TreeItem<>(new Folder(file, true), new ImageView(FOLDER_ICON));
