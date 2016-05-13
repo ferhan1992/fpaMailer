@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bht.fpa.mail.s819191.controller;
 
+import de.bht.fpa.mail.s819191.model.appLogic.FolderManager;
+import de.bht.fpa.mail.s819191.model.appLogic.FolderManagerIF;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -14,11 +11,15 @@ import de.bht.fpa.mail.s819191.model.data.Component;
 import de.bht.fpa.mail.s819191.model.data.FileElement;
 import de.bht.fpa.mail.s819191.model.data.Folder;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -27,81 +28,81 @@ import javafx.scene.image.ImageView;
  */
 public class MainWindowController implements Initializable {
 
-    private final File ROOT_PATH = new File(System.getProperty("user.home"));
     private final Image FOLDER_ICON = new Image("/de/bht/fpa/mail/s819191/icons/folder.png");
     private final Image FILE_ICON = new Image("/de/bht/fpa/mail/s819191/icons/file.png");
-    private final TreeItem<Component> DUMMY = new TreeItem<>();
+    private final File ROOT_PATH = new File(System.getProperty("user.home"));
+    private List<File> historyList;
+    private FolderManagerIF manager;
 
     @FXML
     private TreeView<Component> dirTree;
+    @FXML
+    private MenuItem menuItemOpen;
+    @FXML
+    private MenuItem menuItemHistory;
 
-    private void configureTree() {
-        final Folder MAIN_FOLDER = new Folder(ROOT_PATH, false);
-        final TreeItem<Component> mainDirTree = new TreeItem<>(MAIN_FOLDER, new ImageView(FOLDER_ICON));
-        showItems(MAIN_FOLDER, mainDirTree);
+    public MainWindowController() {
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        configureTree(ROOT_PATH);
+        configureMenue();
+    }
+
+    private void configureTree(File root) {
+        manager = new FolderManager(root);
+        final TreeItem<Component> mainDirTree = new TreeItem<>(manager.getTopFolder(), new ImageView(FOLDER_ICON));
         mainDirTree.setExpanded(true);
-        dirTree.setRoot(mainDirTree);
+        showItems(manager.getTopFolder(), mainDirTree);
         mainDirTree.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
-        mainDirTree.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
+        dirTree.setRoot(mainDirTree);
     }
 
     public void branchExpand(final TreeModificationEvent<Component> e) {
-        showItems((Folder) e.getSource().getValue(), e.getTreeItem());
+        showItems((Folder) e.getTreeItem().getValue(), e.getTreeItem());
     }
 
-    private void branchCollapse(final TreeModificationEvent<Component> e) {
-        e.getTreeItem().getChildren().removeAll(e.getTreeItem().getChildren());
-        e.getTreeItem().getChildren().add(DUMMY);
-    }
-
-    public ArrayList<Component> loadContent(final Folder f) {
-        final ArrayList<Component> al = new ArrayList<>();
-        final File file = new File(f.getPath());
-        for (File fi : file.listFiles()) {
-            if (fi.isDirectory()) {
-                if (fi.list().length == 0) {
-                    Folder y = new Folder(fi.getAbsoluteFile(), false);
-                    al.add(y);
-                } else {
-                    Folder y = new Folder(fi.getAbsoluteFile(), true);
-                    al.add(y);
-                }
-            } else {
-                FileElement y = new FileElement(fi.getAbsoluteFile());
-                al.add(y);
-            }
-        }
-        return al;
-    }
-
-    public void showItems(final Folder f, final TreeItem parent) {
-        loadContent(f).stream().forEach((com) -> {
-            final File file = new File(com.getPath());
-            if (com.getClass().getName().contains("Folder")) {
+    public void showItems(final Folder f, final TreeItem<Component> parent) {
+        parent.getChildren().clear();
+        f.getComponents().clear();
+        manager.loadContent(f);
+        final TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
+        f.getComponents().stream().forEach((Component com) -> {
+            TreeItem<Component> z;
+            if (com instanceof Folder) {
+                z = new TreeItem<>(com, new ImageView(FOLDER_ICON));
+                parent.getChildren().add(z);
                 if (com.isExpandable()) {
-                    TreeItem<Component> z = new TreeItem<>(new Folder(file, true), new ImageView(FOLDER_ICON));
-                    parent.getChildren().add(z);
                     z.getChildren().add(DUMMY);
-                } else if (!com.isExpandable()) {
-                    TreeItem<Component> z = new TreeItem<>(new Folder(file, false), new ImageView(FOLDER_ICON));
-                    parent.getChildren().add(z);
                 }
-            } else {
-                TreeItem<Component> z = new TreeItem<>(new FileElement(file), new ImageView(FILE_ICON));
+            } else if (com instanceof FileElement) {
+                z = new TreeItem<>(com, new ImageView(FILE_ICON));
                 parent.getChildren().add(z);
             }
         });
     }
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        configureTree();
+    private void configureMenue() {
+        menuItemOpen.setOnAction((e) -> menuEvents(e));
+        menuItemHistory.setOnAction((e) -> menuEvents(e));
     }
 
+    private void menuEvents(ActionEvent e) {
+        if (e.getSource() == menuItemOpen) {
+            directoryChoose();
+        }
+        if (e.getSource() == menuItemHistory) {
+            
+        }
+    }
+
+    private void directoryChoose() {
+        Stage stage = new Stage();
+        stage.setTitle("Open...");
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setInitialDirectory(ROOT_PATH);
+        final File file = dc.showDialog(stage);
+        configureTree(file);
+    }
 }

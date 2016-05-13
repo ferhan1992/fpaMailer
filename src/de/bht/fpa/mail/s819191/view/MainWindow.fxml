@@ -33,7 +33,8 @@
           <Menu id="menuAccount" fx:id="menuAccount" mnemonicParsing="false" text="Account" />
           <Menu id="menuFile" fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem id="menuItemDelete" fx:id="menuItemDelete" mnemonicParsing="false" text="Open" />
+              <MenuItem id="menuItemOpen" fx:id="menuItemOpen" mnemonicParsing="false" text="Open" />
+                  <MenuItem id="menuItemHistory" fx:id="menuItemHistory" mnemonicParsing="false" text="History" />
             </items>
           </Menu>
         </menus>

@@ -1,5 +1,6 @@
 package de.bht.fpa.mail.s819191.model.appLogic;
 
+import de.bht.fpa.mail.s819191.model.data.FileElement;
 import de.bht.fpa.mail.s819191.model.data.Folder;
 import java.io.File;
 
@@ -21,7 +22,7 @@ public class FolderManager implements FolderManagerIF {
      * @param file File which points to the top directory
      */
     public FolderManager(File file) {
-       // hier kommt Ihr Code hin.
+       topFolder = new Folder (file, true);
     }
     
     /**
@@ -32,7 +33,21 @@ public class FolderManager implements FolderManagerIF {
      */
     @Override
     public void loadContent(Folder f) {
-        // hier kommt Ihr Code hin.
+        File file = new File(f.getPath());
+        for (File fi : file.listFiles()) {
+            if (fi.isDirectory()) {
+                if (fi.list().length == 0) {
+                    Folder y = new Folder(fi.getAbsoluteFile(), false);
+                    f.addComponent(y);
+                } else {
+                    Folder y = new Folder(fi.getAbsoluteFile(), true);
+                    f.addComponent(y);
+                }
+            } else if (fi.isFile()) {
+                FileElement y = new FileElement(fi.getAbsoluteFile());
+                f.addComponent(y);
+            }
+        }
     }
 
     @Override
