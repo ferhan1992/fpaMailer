@@ -13,22 +13,24 @@ import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FXML Controller class of the main window.
  *
- * @author Ferhan
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
  */
 public class MainWindowController implements Initializable {
 
@@ -37,8 +39,8 @@ public class MainWindowController implements Initializable {
     private final File ROOT_PATH = new File((System.getProperty("user.dir") + "/src/de/bht/fpa/mail/gruppe15/Account"));
     private final ArrayList<File> historyList = new ArrayList<>();
     private FolderManager folderManager;
-    private EmailManager emailManager;
-    
+    public EmailManager emailManager;
+
     @FXML
     private TreeView<Component> dirTree;
     @FXML
@@ -49,37 +51,37 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureTree(ROOT_PATH);
-        configureMenue();
+        configureMenu();
     }
 
     public void configureTree(File root) {
         folderManager = new FolderManager(root);
         emailManager = new EmailManager();
-        final TreeItem<Component> mainDirTree = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+        TreeItem<Component> mainDirTree = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
         mainDirTree.setExpanded(true);
         showItems(folderManager.getTopFolder(), mainDirTree);
         mainDirTree.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
         mainDirTree.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
-        dirTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> emailPrint(newValue));
+        dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> emailPrint(new_val));
         dirTree.setRoot(mainDirTree);
     }
 
-    private void branchExpand(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti = e.getTreeItem();
+    private void branchExpand(TreeModificationEvent<Component> e) {
+        TreeItem<Component> ti = e.getTreeItem();
         ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
         showItems((Folder) ti.getValue(), ti);
     }
 
     private void branchCollapse(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti = e.getTreeItem();
+        TreeItem<Component> ti = e.getTreeItem();
         ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
     }
 
-    private void showItems(final Folder f, final TreeItem<Component> parent) {
+    private void showItems(Folder f, TreeItem<Component> parent) {
         parent.getChildren().clear();
         folderManager.loadContent(f);
-        final TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
-        f.getComponents().stream().forEach((Component com) -> {
+        TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
+        for (Component com : f.getComponents()) {
             TreeItem<Component> z;
             if (com instanceof Folder) {
                 z = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
@@ -88,10 +90,10 @@ public class MainWindowController implements Initializable {
                     z.getChildren().add(DUMMY);
                 }
             }
-        });
+        }
     }
 
-    private void configureMenue() {
+    private void configureMenu() {
         menuItemOpen.setOnAction((e) -> menuEvents(e));
         menuItemHistory.setOnAction((e) -> menuEvents(e));
     }
@@ -107,11 +109,12 @@ public class MainWindowController implements Initializable {
 
     private void directoryChoose() {
         Stage stage = new Stage();
-        stage.setTitle("Open...");
+        stage.setTitle("Open new directory...");
         DirectoryChooser dc = new DirectoryChooser();
         dc.setInitialDirectory(ROOT_PATH);
-        final File file = dc.showDialog(stage);
+        File file = dc.showDialog(stage);
         if (file != null) {
+            /* && !(historyList.contains(file))) { */
             configureTree(file);
             historyList.add(file);
         }
@@ -124,7 +127,7 @@ public class MainWindowController implements Initializable {
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
             Stage historyStage = new Stage();
-            historyStage.setTitle("Select Base Directory");
+            historyStage.setTitle("Directory history...");
             historyStage.setScene(scene);
             historyStage.show();
         } catch (Exception ex) {
@@ -136,13 +139,13 @@ public class MainWindowController implements Initializable {
         return historyList;
     }
 
-    private void emailPrint(final TreeItem<Component> parent) {
-        final Folder f = (Folder) parent.getValue();
+    private void emailPrint(TreeItem<Component> parent) {
+        Folder f = (Folder) parent.getValue();
         emailManager.loadContent(f);
         System.out.println("Selected directory: " + f.getPath());
         System.out.println("Number of E-Mails: " + f.getEmails().size());
-        for (Email email :f.getEmails()){
+        f.getEmails().stream().forEach((Email email) -> {
             System.out.println(email.toString());
-        }
+        });
     }
 }

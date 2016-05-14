@@ -7,7 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * 
+ * Main class of the project which initializes the main Window.
+ *
  * @author Ferhan Kaplanseren
  * @author Ömür Düner
  */

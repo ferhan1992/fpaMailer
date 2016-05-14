@@ -9,7 +9,6 @@ import java.util.List;
  * @author Simone Strippgen
  *
  */
-
 public class Folder extends Component {
 
     private boolean expandable;
@@ -44,4 +43,4 @@ public class Folder extends Component {
     public void addEmail(Email message) {
         emails.add(message);
     }
- }
+}

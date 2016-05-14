@@ -16,11 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * This class represents an Email. It can be used together with JAXB.
  *
  * @author Simone Strippgen
- * 
+ *
  */
 @XmlRootElement
 public class Email {
-    private static final DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
+
+    private static DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
     private String sender;
     private ArrayList<String> receiverTo;
     private ArrayList<String> receiverCC;
@@ -168,7 +169,7 @@ public class Email {
     public void setRead(boolean w) {
         read = w;
     }
-    
+
     public String getReceived() {
         return FORMAT.format(received);
     }
@@ -176,7 +177,7 @@ public class Email {
     public void setReceived(Date date) {
         received = date;
     }
-    
+
     public void setReceived(String date) {
         try {
             received = FORMAT.parse(date);

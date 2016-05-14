@@ -8,14 +8,14 @@ import java.util.List;
  * 
  * @author Simone Strippgen
  */
-
 public abstract class Component {
+
     // absolute directory path to this component
     private String path;
     // name of the component (without path)
     private String name;
 
-    public Component(File path) {
+    public  Component(File path) {
         this.path = path.getAbsolutePath();
         this.name = path.getName();
     }
@@ -27,7 +27,7 @@ public abstract class Component {
     public List<Component> getComponents() {
         throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     // @return is the component expandable
     public abstract boolean isExpandable();
 

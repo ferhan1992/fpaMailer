@@ -12,9 +12,10 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FXML Controller class for the history window.
  *
- * @author FerhanKaplanseren
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
  */
 public class HistoryWindowController implements Initializable {
 
@@ -31,15 +32,33 @@ public class HistoryWindowController implements Initializable {
         mainWindowController = aThis;
     }
 
+    /**
+     * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        buttonCancel.setOnAction((ActionEvent e) -> cancelButton());
-        buttonOK.setOnAction((ActionEvent e) -> okButton());
+        buttonCancel.setOnAction((ActionEvent e) -> cancelButtonEvent());
+        buttonOK.setOnAction((ActionEvent e) -> okButtonEvent());
         loadView();
     }
 
+    /**
+     * Method to load the history content.
+     *
+     * Method takes the historyList from the main WindowController and checks,
+     * whether it is empty or not.
+     *
+     * If empty, the ok button will be disabled and the text "no base
+     * directories in history" will be shown.
+     *
+     * If not empty the listView gets the Items of historyList added.
+     */
     private void loadView() {
-        ArrayList<File> historyList = mainWindowController.getHistory();
+        ArrayList<File> historyList;
+        historyList = mainWindowController.getHistory();
         if (historyList.isEmpty()) {
             listViewHistory.getItems().add(new File("no base directories in history"));
             buttonOK.setDisable(true);
@@ -48,18 +67,27 @@ public class HistoryWindowController implements Initializable {
         }
     }
 
-    private void cancelButton() {
+    /**
+     * Method to close the history window without performing any actions.
+     */
+    private void cancelButtonEvent() {
         Stage historyStage = (Stage) buttonCancel.getScene().getWindow();
         historyStage.close();
     }
 
-    private void okButton() {
+    /**
+     * Method to choose the selected path from the history as the new root path
+     * of active treeview of the main window.
+     *
+     * if nothing is choosen, an error message is printed out.
+     */
+    private void okButtonEvent() {
         if (listViewHistory.getSelectionModel().getSelectedItem() != null) {
             mainWindowController.configureTree((File) listViewHistory.getSelectionModel().getSelectedItem());
             Stage historyStage = (Stage) buttonOK.getScene().getWindow();
             historyStage.close();
         } else {
-            System.out.println("nothing choosed...");
+            System.out.println("Error: No directory of history choosen...");
         }
     }
 
