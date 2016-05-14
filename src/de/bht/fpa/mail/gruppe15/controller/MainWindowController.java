@@ -1,13 +1,14 @@
 package de.bht.fpa.mail.gruppe15.controller;
 
+import de.bht.fpa.mail.gruppe15.model.appLogic.EmailManager;
 import de.bht.fpa.mail.gruppe15.model.appLogic.FolderManager;
-import de.bht.fpa.mail.gruppe15.model.appLogic.FolderManagerIF;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import de.bht.fpa.mail.gruppe15.model.data.Component;
+import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
@@ -34,8 +36,9 @@ public class MainWindowController implements Initializable {
     private final Image FOLDER_ICON_OPEN = new Image("/de/bht/fpa/mail/gruppe15/icons/folder_open.png");
     private final File ROOT_PATH = new File((System.getProperty("user.dir") + "/src/de/bht/fpa/mail/gruppe15/Account"));
     private final ArrayList<File> historyList = new ArrayList<>();
-    private FolderManagerIF manager;
-
+    private FolderManager folderManager;
+    private EmailManager emailManager;
+    
     @FXML
     private TreeView<Component> dirTree;
     @FXML
@@ -50,12 +53,14 @@ public class MainWindowController implements Initializable {
     }
 
     public void configureTree(File root) {
-        manager = new FolderManager(root);
-        final TreeItem<Component> mainDirTree = new TreeItem<>(manager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+        folderManager = new FolderManager(root);
+        emailManager = new EmailManager();
+        final TreeItem<Component> mainDirTree = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
         mainDirTree.setExpanded(true);
-        showItems(manager.getTopFolder(), mainDirTree);
+        showItems(folderManager.getTopFolder(), mainDirTree);
         mainDirTree.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
         mainDirTree.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
+        dirTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> emailPrint(newValue));
         dirTree.setRoot(mainDirTree);
     }
 
@@ -65,14 +70,14 @@ public class MainWindowController implements Initializable {
         showItems((Folder) ti.getValue(), ti);
     }
 
-    private void branchCollapse(TreeModificationEvent<Component> e) {
+    private void branchCollapse(final TreeModificationEvent<Component> e) {
         final TreeItem<Component> ti = e.getTreeItem();
         ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
     }
 
     private void showItems(final Folder f, final TreeItem<Component> parent) {
         parent.getChildren().clear();
-        manager.loadContent(f);
+        folderManager.loadContent(f);
         final TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
         f.getComponents().stream().forEach((Component com) -> {
             TreeItem<Component> z;
@@ -129,5 +134,15 @@ public class MainWindowController implements Initializable {
 
     public ArrayList getHistory() {
         return historyList;
+    }
+
+    private void emailPrint(final TreeItem<Component> parent) {
+        final Folder f = (Folder) parent.getValue();
+        emailManager.loadContent(f);
+        System.out.println("Selected directory: " + f.getPath());
+        System.out.println("Number of E-Mails: " + f.getEmails().size());
+        for (Email email :f.getEmails()){
+            System.out.println(email.toString());
+        }
     }
 }

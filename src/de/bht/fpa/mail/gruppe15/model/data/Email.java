@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bht.fpa.mail.gruppe15.model.data;
 
 import java.text.DateFormat;
