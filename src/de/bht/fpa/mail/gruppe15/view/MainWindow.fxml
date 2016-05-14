@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="mainPanel" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bht.fpa.mail.gruppe15.controller.MainWindowController">
+   <children>
+      <SplitPane id="mainSplitPanel" dividerPositions="0.29797979797979796" prefHeight="551.0" prefWidth="880.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="39.0">
+        <items>
+          <AnchorPane id="leftPanel" minHeight="0.0" minWidth="0.0" prefHeight="524.0" prefWidth="258.0">
+               <children>
+                  <TreeView id="dirTree" fx:id="dirTree" prefHeight="578.0" prefWidth="258.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane id="rightPanel" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <SplitPane id="rightPanelSplitPanel" dividerPositions="0.5" layoutX="207.0" layoutY="189.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane id="rightUpperPanel" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                      <AnchorPane id="rightLowerPanel" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <MenuBar id="menuBar" fx:id="menuBar" prefHeight="15.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <menus>
+          <Menu id="menuAccount" fx:id="menuAccount" mnemonicParsing="false" text="Account" />
+          <Menu id="menuFile" fx:id="menuFile" mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem id="menuItemOpen" fx:id="menuItemOpen" mnemonicParsing="false" text="Open" />
+                  <MenuItem id="menuItemHistory" fx:id="menuItemHistory" mnemonicParsing="false" text="History" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
