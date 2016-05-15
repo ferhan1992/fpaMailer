@@ -4,7 +4,7 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
-import javax.xml.bind.DataBindingException;
+import java.util.List;
 import javax.xml.bind.JAXB;
 
 /**
@@ -24,17 +24,13 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void loadContent(final Folder f) {
-        final File file;
-        file = new File(f.getPath());
-        FileFilter filter;
-        filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
         if (f.getEmails().isEmpty()) {
+            final File file;
+            file = new File(f.getPath());
+            FileFilter filter;
+            filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
             for (final File fi : file.listFiles(filter)) {
-                try {
-                    f.addEmail(JAXB.unmarshal(fi, Email.class));
-                } catch (DataBindingException e) {
-                    System.out.println("XML is not conform to be used. See following details: " + e.getMessage());
-                }
+                f.addEmail(JAXB.unmarshal(fi, Email.class));
             }
         }
     }

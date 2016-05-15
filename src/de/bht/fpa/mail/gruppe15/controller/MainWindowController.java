@@ -42,7 +42,7 @@ public class MainWindowController implements Initializable {
     private final ArrayList<File> historyList = new ArrayList<>();
     /* Declaration of the needed managers for handling folders and emails */
     private FolderManagerIF folderManager;
-    private EmailManagerIF emailManager;
+    private final EmailManagerIF emailManager = new EmailManager();
 
     @FXML
     private TreeView<Component> dirTree;
@@ -63,6 +63,7 @@ public class MainWindowController implements Initializable {
     public void initialize(final URL url, final ResourceBundle rb) {
         configureTree(ROOT_PATH);
         configureMenu();
+        dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> emailPrint(new_val));
     }
 
     /**
@@ -86,14 +87,12 @@ public class MainWindowController implements Initializable {
      */
     public void configureTree(final File root) {
         folderManager = new FolderManager(root);
-        emailManager = new EmailManager();
         final TreeItem<Component> rootItem;
         rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
         rootItem.setExpanded(true);
         rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
         rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
         showItems(folderManager.getTopFolder(), rootItem);
-        dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> emailPrint(new_val));
         dirTree.setRoot(rootItem);
     }
 
