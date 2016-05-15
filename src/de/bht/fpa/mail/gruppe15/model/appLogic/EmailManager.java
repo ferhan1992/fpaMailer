@@ -24,8 +24,10 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void loadContent(final Folder f) {
-        final File file = new File(f.getPath());
-        FileFilter filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
+        final File file;
+        file = new File(f.getPath());
+        FileFilter filter;
+        filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
         if (f.getEmails().isEmpty()) {
             for (final File fi : file.listFiles(filter)) {
                 try {

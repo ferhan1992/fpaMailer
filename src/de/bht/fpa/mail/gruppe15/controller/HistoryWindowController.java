@@ -75,7 +75,8 @@ public class HistoryWindowController implements Initializable {
      * command.
      */
     private void cancelButtonEvent() {
-        final Stage historyStage = (Stage) buttonCancel.getScene().getWindow();
+        final Stage historyStage;
+        historyStage = (Stage) buttonCancel.getScene().getWindow();
         historyStage.close();
     }
 
@@ -94,7 +95,8 @@ public class HistoryWindowController implements Initializable {
     private void okButtonEvent() {
         if (listViewHistory.getSelectionModel().getSelectedItem() != null) {
             mainWindowController.configureTree((File) listViewHistory.getSelectionModel().getSelectedItem());
-            final Stage historyStage = (Stage) buttonOK.getScene().getWindow();
+            final Stage historyStage;
+            historyStage = (Stage) buttonOK.getScene().getWindow();
             historyStage.close();
         } else {
             System.out.println("Error: No directory of history choosen...");

@@ -35,14 +35,16 @@ public class FolderManager implements FolderManagerIF {
     @Override
     public void loadContent(final Folder f) {
         f.getComponents().clear();
-        final File file = new File(f.getPath());
+        final File file;
+        file = new File(f.getPath());
         for (final File fi : file.listFiles()) {
             if (fi.isDirectory()) {
+                final Folder y;
                 if (fi.list().length == 0) {
-                    Folder y = new Folder(fi.getAbsoluteFile(), false);
+                    y = new Folder(fi.getAbsoluteFile(), false);
                     f.addComponent(y);
                 } else {
-                    Folder y = new Folder(fi.getAbsoluteFile(), true);
+                    y = new Folder(fi.getAbsoluteFile(), true);
                     f.addComponent(y);
                 }
             }

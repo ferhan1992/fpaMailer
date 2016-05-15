@@ -87,7 +87,8 @@ public class MainWindowController implements Initializable {
     public void configureTree(final File root) {
         folderManager = new FolderManager(root);
         emailManager = new EmailManager();
-        final TreeItem<Component> rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+        final TreeItem<Component> rootItem;
+        rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
         rootItem.setExpanded(true);
         rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
         rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
@@ -104,7 +105,8 @@ public class MainWindowController implements Initializable {
      *
      */
     private void branchExpand(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti = e.getTreeItem();
+        final TreeItem<Component> ti;
+        ti = e.getTreeItem();
         ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
         showItems((Folder) ti.getValue(), ti);
     }
@@ -116,7 +118,8 @@ public class MainWindowController implements Initializable {
      *
      */
     private void branchCollapse(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti = e.getTreeItem();
+        final TreeItem<Component> ti;
+        ti = e.getTreeItem();
         ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
     }
 
@@ -139,12 +142,14 @@ public class MainWindowController implements Initializable {
         folderManager.loadContent(f);
         f.getComponents().stream().forEach((final Component com) -> {
             if (com instanceof Folder) {
-                final TreeItem<Component> z = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
+                final TreeItem<Component> item;
+                item = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
                 if (com.isExpandable()) {
-                    final TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
-                    z.getChildren().add(DUMMY);
+                    final TreeItem<Component> DUMMY; //DUMMY ITEM
+                    DUMMY = new TreeItem<>();
+                    item.getChildren().add(DUMMY);
                 }
-                parent.getChildren().add(z);
+                parent.getChildren().add(item);
             }
         });
     }
@@ -186,11 +191,14 @@ public class MainWindowController implements Initializable {
      *
      */
     private void directoryChoose() {
-        final Stage stage = new Stage();
+        final Stage stage;
+        stage = new Stage();
         stage.setTitle("Open new directory...");
-        final DirectoryChooser dc = new DirectoryChooser();
+        final DirectoryChooser dc;
+        dc = new DirectoryChooser();
         dc.setInitialDirectory(ROOT_PATH);
-        final File file = dc.showDialog(stage);
+        final File file;
+        file = dc.showDialog(stage);
         if (file != null) {
             /* && !(historyList.contains(file))) { */
             configureTree(file);
@@ -205,11 +213,15 @@ public class MainWindowController implements Initializable {
      */
     private void showHistory() {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/HistoryWindow.fxml"));
+            final FXMLLoader loader;
+            loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/HistoryWindow.fxml"));
             loader.setController(new HistoryWindowController(this));
-            final Parent root = (Parent) loader.load();
-            final Scene scene = new Scene(root);
-            final Stage historyStage = new Stage();
+            final Parent root;
+            root = (Parent) loader.load();
+            final Scene scene;
+            scene = new Scene(root);
+            final Stage historyStage;
+            historyStage = new Stage();
             historyStage.setTitle("Directory history...");
             historyStage.setScene(scene);
             historyStage.show();
@@ -232,7 +244,8 @@ public class MainWindowController implements Initializable {
      *
      */
     private void emailPrint(TreeItem<Component> parent) {
-        final Folder f = (Folder) parent.getValue();
+        final Folder f;
+        f = (Folder) parent.getValue();
         emailManager.loadContent(f);
         emailManager.printContent(f);
     }
