@@ -11,12 +11,16 @@ import de.bht.fpa.mail.gruppe15.model.data.Folder;
 public interface EmailManagerIF {
 
     /**
-     * Loads all relevant content in the directory path of a folder into the
-     * folder.
+     * Loads all emails in the directory path of a folder into the given folder.
      *
-     * @param f the folder into which the content of the corresponding directory
-     * should be loaded
+     * @param f the folder into which the content of emails should be loaded
      */
     void loadContent(final Folder f);
 
+    /**
+     * Method to print the email content on console.
+     *
+     * @param f the folder which contains the emails.
+     */
+    void printContent(final Folder f);
 }

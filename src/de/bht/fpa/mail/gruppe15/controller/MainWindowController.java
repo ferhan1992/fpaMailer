@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import de.bht.fpa.mail.gruppe15.model.data.Component;
-import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
@@ -139,16 +138,13 @@ public class MainWindowController implements Initializable {
         parent.getChildren().clear();
         folderManager.loadContent(f);
         f.getComponents().stream().forEach((final Component com) -> {
-            final TreeItem<Component> z;
             if (com instanceof Folder) {
-                z = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
-                parent.getChildren().add(z);
+                final TreeItem<Component> z = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
                 if (com.isExpandable()) {
                     final TreeItem<Component> DUMMY = new TreeItem<>(); //DUMMY ITEM
                     z.getChildren().add(DUMMY);
-                    if(com.getComponents().isEmpty()){
-                    }
                 }
+                parent.getChildren().add(z);
             }
         });
     }
@@ -196,7 +192,7 @@ public class MainWindowController implements Initializable {
         dc.setInitialDirectory(ROOT_PATH);
         final File file = dc.showDialog(stage);
         if (file != null) {
-            /* && !(historyList.contains(file))) { */ 
+            /* && !(historyList.contains(file))) { */
             configureTree(file);
             historyList.add(file);
         }
@@ -225,23 +221,19 @@ public class MainWindowController implements Initializable {
     /**
      * Method to get the historyList.
      *
+     * @return Returns the history list as an ArrayList.
      */
     public ArrayList getHistory() {
         return historyList;
     }
 
     /**
-     * Method to print the emails found in the directory of the chosen
-     * treeitem.
+     * Method to print the emails found in the directory of the chosen treeitem.
      *
      */
     private void emailPrint(TreeItem<Component> parent) {
         final Folder f = (Folder) parent.getValue();
         emailManager.loadContent(f);
-        System.out.println("Selected directory: " + f.getPath());
-        System.out.println("Number of E-Mails: " + f.getEmails().size());
-        f.getEmails().stream().forEach((final Email email) -> {
-            System.out.println(email.toString());
-        });
+        emailManager.printContent(f);
     }
 }
