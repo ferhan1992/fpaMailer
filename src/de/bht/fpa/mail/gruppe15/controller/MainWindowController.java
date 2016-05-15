@@ -63,7 +63,7 @@ public class MainWindowController implements Initializable {
     public void initialize(final URL url, final ResourceBundle rb) {
         configureTree(ROOT_PATH);
         configureMenu();
-        dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> emailPrint(new_val));
+        dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> listMails(new_val));
     }
 
     /**
@@ -90,36 +90,28 @@ public class MainWindowController implements Initializable {
         final TreeItem<Component> rootItem;
         rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
         rootItem.setExpanded(true);
-        rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchExpand(e));
-        rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchCollapse(e));
+        rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
+        rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
         showItems(folderManager.getTopFolder(), rootItem);
         dirTree.setRoot(rootItem);
     }
 
     /**
-     * Method which handles the event when a treeitem gets expanded.
+     * Method which handles the event when a treeitem gets expanded/collapsed.
      *
      * The expanded treeitem gets a new icon and the method showItems() is
      * called to show the new folders within this treeitem.
      *
      */
-    private void branchExpand(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti;
-        ti = e.getTreeItem();
-        ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
-        showItems((Folder) ti.getValue(), ti);
-    }
-
-    /**
-     * Method which handles the event when a treeitem gets collapsed.
-     *
-     * The collapsed treeitem gets a new icon.
-     *
-     */
-    private void branchCollapse(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti;
-        ti = e.getTreeItem();
-        ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
+    private void branchEvents(final TreeModificationEvent<Component> e) {
+        final TreeItem<Component> ti = e.getTreeItem();
+        if (e.wasCollapsed()) {
+            ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
+        }
+        if (e.wasExpanded()) {
+            ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
+            showItems((Folder) ti.getValue(), ti);
+        }
     }
 
     /**
@@ -137,8 +129,8 @@ public class MainWindowController implements Initializable {
      * @param parent The Parent TreeItem.
      */
     private void showItems(final Folder f, final TreeItem<Component> parent) {
-        parent.getChildren().clear();
         folderManager.loadContent(f);
+        parent.getChildren().clear();
         f.getComponents().stream().forEach((final Component com) -> {
             if (com instanceof Folder) {
                 final TreeItem<Component> item;
@@ -243,7 +235,7 @@ public class MainWindowController implements Initializable {
      * if it is not null.
      *
      */
-    private void emailPrint(TreeItem<Component> parent) {
+    private void listMails(TreeItem<Component> parent) {
         if (parent != null) {
             final Folder f;
             f = (Folder) parent.getValue();
