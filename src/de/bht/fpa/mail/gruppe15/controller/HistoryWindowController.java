@@ -26,9 +26,9 @@ public class HistoryWindowController implements Initializable {
     @FXML
     private Button buttonOK;
 
-    private MainWindowController mainWindowController;
+    private final MainWindowController mainWindowController;
 
-    HistoryWindowController(MainWindowController aThis) {
+    HistoryWindowController(final MainWindowController aThis) {
         mainWindowController = aThis;
     }
 
@@ -39,7 +39,7 @@ public class HistoryWindowController implements Initializable {
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(final URL url, final ResourceBundle rb) {
         buttonCancel.setOnAction((ActionEvent e) -> cancelButtonEvent());
         buttonOK.setOnAction((ActionEvent e) -> okButtonEvent());
         loadView();
@@ -57,7 +57,7 @@ public class HistoryWindowController implements Initializable {
      * If not empty the listView gets the Items of historyList added.
      */
     private void loadView() {
-        ArrayList<File> historyList;
+        final ArrayList<File> historyList;
         historyList = mainWindowController.getHistory();
         if (historyList.isEmpty()) {
             listViewHistory.getItems().add(new File("no base directories in history"));
@@ -69,22 +69,32 @@ public class HistoryWindowController implements Initializable {
 
     /**
      * Method to close the history window without performing any actions.
+     *
+     * The current stage in which the cancel button is present is handed over to
+     * a new variable of type stage. After that, the stage gets the close
+     * command.
      */
     private void cancelButtonEvent() {
-        Stage historyStage = (Stage) buttonCancel.getScene().getWindow();
+        final Stage historyStage = (Stage) buttonCancel.getScene().getWindow();
         historyStage.close();
     }
 
     /**
      * Method to choose the selected path from the history as the new root path
-     * of active treeview of the main window.
+     * of active treeview of the main window. The ListView is checked for
+     * whether it is empty or not. If its not empty, the choosen file of the
+     * ListView is sent to the TreeView of the MainWindowController to show the
+     * directory structure of it.
      *
-     * if nothing is choosen, an error message is printed out.
+     * The current stage in which the ok button is present is handed over to a
+     * new variable of type stage. After that, the stage gets the close command.
+     *
+     * If nothing is choosen but ok is clicked, an error message is printed out.
      */
     private void okButtonEvent() {
         if (listViewHistory.getSelectionModel().getSelectedItem() != null) {
             mainWindowController.configureTree((File) listViewHistory.getSelectionModel().getSelectedItem());
-            Stage historyStage = (Stage) buttonOK.getScene().getWindow();
+            final Stage historyStage = (Stage) buttonOK.getScene().getWindow();
             historyStage.close();
         } else {
             System.out.println("Error: No directory of history choosen...");

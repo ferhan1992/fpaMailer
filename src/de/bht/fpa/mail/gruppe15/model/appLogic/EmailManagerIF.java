@@ -17,6 +17,6 @@ public interface EmailManagerIF {
      * @param f the folder into which the content of the corresponding directory
      * should be loaded
      */
-    void loadContent(Folder f);
+    void loadContent(final Folder f);
 
 }

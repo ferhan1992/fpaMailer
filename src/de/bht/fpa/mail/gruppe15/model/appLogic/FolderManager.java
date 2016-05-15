@@ -12,7 +12,7 @@ import java.io.File;
 public class FolderManager implements FolderManagerIF {
 
     //top Folder of the managed hierarchy
-    Folder topFolder;
+    final Folder topFolder;
 
     /**
      * Constructs a new FileManager object which manages a folder hierarchy,
@@ -21,7 +21,7 @@ public class FolderManager implements FolderManagerIF {
      *
      * @param file File which points to the top directory
      */
-    public FolderManager(File file) {
+    public FolderManager(final File file) {
         topFolder = new Folder(file, true);
     }
 
@@ -33,10 +33,10 @@ public class FolderManager implements FolderManagerIF {
      * should be loaded
      */
     @Override
-    public void loadContent(Folder f) {
+    public void loadContent(final Folder f) {
         f.getComponents().clear();
-        File file = new File(f.getPath());
-        for (File fi : file.listFiles()) {
+        final File file = new File(f.getPath());
+        for (final File fi : file.listFiles()) {
             if (fi.isDirectory()) {
                 if (fi.list().length == 0) {
                     Folder y = new Folder(fi.getAbsoluteFile(), false);
