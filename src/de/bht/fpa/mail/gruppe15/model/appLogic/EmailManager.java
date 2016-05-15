@@ -4,7 +4,6 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.List;
 import javax.xml.bind.JAXB;
 
 /**
@@ -42,6 +41,7 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void printContent(final Folder f) {
+        System.out.println("===========================================================================================================================================");
         System.out.println("Selected directory: " + f.getPath());
         System.out.println("Number of E-Mails: " + f.getEmails().size());
         if (f.getEmails().size() > 0) {
