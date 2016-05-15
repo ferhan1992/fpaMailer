@@ -240,13 +240,16 @@ public class MainWindowController implements Initializable {
     }
 
     /**
-     * Method to print the emails found in the directory of the chosen treeitem.
+     * Method to print the emails found in the directory of the chosen treeitem
+     * if it is not null.
      *
      */
     private void emailPrint(TreeItem<Component> parent) {
-        final Folder f;
-        f = (Folder) parent.getValue();
-        emailManager.loadContent(f);
-        emailManager.printContent(f);
+        if (parent != null) {
+            final Folder f;
+            f = (Folder) parent.getValue();
+            emailManager.loadContent(f);
+            emailManager.printContent(f);
+        }
     }
 }
