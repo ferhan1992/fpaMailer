@@ -44,7 +44,7 @@ public class FolderManager implements FolderManagerIF {
                 if (fi.list().length == 0) {
                     y = new Folder(fi.getAbsoluteFile(), false);
                     f.addComponent(y);
-                } else {
+                } else if (fi.list().length > 0) {
                     y = new Folder(fi.getAbsoluteFile(), true);
                     f.addComponent(y);
                 }
