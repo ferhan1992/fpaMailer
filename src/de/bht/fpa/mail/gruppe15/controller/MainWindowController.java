@@ -13,10 +13,13 @@ import de.bht.fpa.mail.gruppe15.model.data.Component;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
@@ -46,6 +49,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private TreeView<Component> dirTree;
+    @FXML
+    private MenuBar menuBar;
     @FXML
     private MenuItem menuItemOpen;
     @FXML
@@ -148,12 +153,15 @@ public class MainWindowController implements Initializable {
     /**
      * Method which configures the menu.
      *
-     * The eventhandlers are set for the available menu items.
+     * Every MenuItem gets the method menuEvents set on action.
      *
      */
     private void configureMenu() {
-        menuItemOpen.setOnAction((e) -> menuEvents(e));
-        menuItemHistory.setOnAction((e) -> menuEvents(e));
+        menuBar.getMenus().stream().forEach((Menu m) -> {
+            m.getItems().stream().forEach((mi) -> {
+                mi.setOnAction((e) -> menuEvents(e));
+            });
+        });
     }
 
     /**
@@ -235,10 +243,10 @@ public class MainWindowController implements Initializable {
      * if it is not null.
      *
      */
-    private void listMails(TreeItem<Component> parent) {
-        if (parent != null) {
+    private void listMails(final TreeItem<Component> target) {
+        if (target != null) {
             final Folder f;
-            f = (Folder) parent.getValue();
+            f = (Folder) target.getValue();
             emailManager.loadContent(f);
             emailManager.printContent(f);
         }
