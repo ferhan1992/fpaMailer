@@ -13,7 +13,6 @@ import de.bht.fpa.mail.gruppe15.model.data.Component;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

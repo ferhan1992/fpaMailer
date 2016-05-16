@@ -21,7 +21,7 @@ public class FpaMailer extends Application {
 
         final Scene scene;
         scene = new Scene(root);
-        stage.setTitle("FPA Mail application");
+        stage.setTitle("FPA Mail application group15");
         stage.setScene(scene);
         stage.show();
     }
