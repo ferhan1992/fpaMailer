@@ -36,15 +36,15 @@ import javafx.stage.Stage;
 public class MainWindowController implements Initializable {
 
     /* Initizializing the Icons for the TreeView */
-    private final Image FOLDER_ICON_CLOSED = new Image("/de/bht/fpa/mail/gruppe15/icons/folder.png");
-    private final Image FOLDER_ICON_OPEN = new Image("/de/bht/fpa/mail/gruppe15/icons/folder_open.png");
+    private static final Image FOLDER_ICON_CLOSED = new Image("/de/bht/fpa/mail/gruppe15/icons/folder.png");
+    private static final Image FOLDER_ICON_OPEN = new Image("/de/bht/fpa/mail/gruppe15/icons/folder_open.png");
     /* Setting the standard root path to to dir of the main account. */
-    private final File ROOT_PATH = new File((System.getProperty("user.dir") + "/src/de/bht/fpa/mail/gruppe15/Account"));
+    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
     /* ArrayList to save the history. */
-    private final ArrayList<File> historyList = new ArrayList<>();
+    private static final ArrayList<File> historyList = new ArrayList<>();
     /* Declaration of the needed managers for handling folders and emails */
-    private FolderManagerIF folderManager;
-    private final EmailManagerIF emailManager = new EmailManager();
+    private static FolderManagerIF folderManager;
+    private static final EmailManagerIF emailManager = new EmailManager();
 
     @FXML
     private TreeView<Component> dirTree;
