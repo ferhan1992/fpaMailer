@@ -16,11 +16,4 @@ public interface EmailManagerIF {
      * @param f the folder into which the content of emails should be loaded
      */
     void loadContent(final Folder f);
-
-    /**
-     * Method to print the email content on console.
-     *
-     * @param f the folder which contains the emails.
-     */
-    void printContent(final Folder f);
 }

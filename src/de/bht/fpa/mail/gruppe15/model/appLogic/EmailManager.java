@@ -33,21 +33,4 @@ public class EmailManager implements EmailManagerIF {
             }
         }
     }
-
-    /**
-     * Method to print the email content on console.
-     *
-     * @param f the folder which contains the emails.
-     */
-    @Override
-    public void printContent(final Folder f) {
-        System.out.println("===========================================================================================================================================");
-        System.out.println("Selected directory: " + f.getPath());
-        System.out.println("Number of E-Mails: " + f.getEmails().size());
-        if (f.getEmails().size() > 0) {
-            f.getEmails().stream().forEach((final Email email) -> {
-                System.out.println(email.toString());
-            });
-        }
-    }
 }

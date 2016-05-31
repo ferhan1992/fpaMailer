@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import de.bht.fpa.mail.gruppe15.model.data.Component;
+import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
@@ -39,12 +40,12 @@ public class MainWindowController implements Initializable {
     private static final Image FOLDER_ICON_CLOSED = new Image("/de/bht/fpa/mail/gruppe15/icons/folder.png");
     private static final Image FOLDER_ICON_OPEN = new Image("/de/bht/fpa/mail/gruppe15/icons/folder_open.png");
     /* Setting the standard root path to to dir of the main account. */
-    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
+    private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
     /* ArrayList to save the history. */
-    private static final ArrayList<File> historyList = new ArrayList<>();
+    private final ArrayList<File> historyList = new ArrayList<>();
     /* Declaration of the needed managers for handling folders and emails */
-    private static FolderManagerIF folderManager;
-    private static final EmailManagerIF emailManager = new EmailManager();
+    private FolderManagerIF folderManager;
+    private final EmailManagerIF emailManager = new EmailManager();
 
     @FXML
     private TreeView<Component> dirTree;
@@ -247,7 +248,14 @@ public class MainWindowController implements Initializable {
             final Folder f;
             f = (Folder) target.getValue();
             emailManager.loadContent(f);
-            emailManager.printContent(f);
+            System.out.println("===========================================================================================================================================");
+            System.out.println("Selected directory: " + f.getPath());
+            System.out.println("Number of E-Mails: " + f.getEmails().size());
+            if (f.getEmails().size() > 0) {
+                f.getEmails().stream().forEach((final Email email) -> {
+                    System.out.println(email.toString());
+                });
+            }
         }
     }
 }
