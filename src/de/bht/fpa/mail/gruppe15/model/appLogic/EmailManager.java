@@ -4,13 +4,11 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javax.imageio.ImageIO;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -55,11 +53,13 @@ public class EmailManager implements EmailManagerIF {
      * saved.
      */
     @Override
-    public void saveEmails(ObservableList<Email> emailList, File selectedDir) {
-        emailList.stream().forEach((email) -> {
+    public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
+        emailList.stream().forEach((final Email email) -> {
             try {
-                JAXBContext jaxbContext = JAXBContext.newInstance(Email.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+                JAXBContext jaxbContext;
+                jaxbContext = JAXBContext.newInstance(Email.class);
+                Marshaller jaxbMarshaller;
+                jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 jaxbMarshaller.marshal(email, selectedDir);
             } catch (JAXBException ex) {
@@ -76,11 +76,11 @@ public class EmailManager implements EmailManagerIF {
      * @return boolean
      */
     private boolean checkEmailFormat(final Email email) {
-        return !(email.getSubject() == null
+        return !(email.getSender() == null
+                || email.getImportance() == null
+                || email.getSubject() == null
                 || email.getText() == null
-                || email.getReceiver() == null
-                || email.getSender() == null
-                || email.getImportance() == null);
+                || email.getReceiver() == null);
     }
 
     /**
@@ -93,7 +93,8 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public ObservableList<Email> search(final ObservableList<Email> emailList, final String input) {
-        final ObservableList filteredMails = FXCollections.observableArrayList();
+        final ObservableList filteredMails;
+        filteredMails = FXCollections.observableArrayList();
         emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
                 || email.getText().toLowerCase().contains(input.trim().toLowerCase())
                 || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())

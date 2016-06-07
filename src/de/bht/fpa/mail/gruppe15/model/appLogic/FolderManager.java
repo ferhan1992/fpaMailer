@@ -58,6 +58,11 @@ public class FolderManager implements FolderManagerIF {
         }
     }
 
+    /**
+     * Get current root folder.
+     *
+     * @return current root folder.
+     */
     @Override
     public Folder getTopFolder() {
         return topFolder;

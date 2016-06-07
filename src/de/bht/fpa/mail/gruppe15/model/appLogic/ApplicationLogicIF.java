@@ -27,7 +27,7 @@ public interface ApplicationLogicIF {
      * @param f the folder into which the content of the corresponding directory
      * should be loaded
      */
-    void loadContent(Folder f);
+    void loadContent(final Folder f);
 
     /**
      * Searches for all emails in the selected folder that contain the given
@@ -46,7 +46,7 @@ public interface ApplicationLogicIF {
      * @param f the folder into which the emails of the corresponding
      * directory should be loaded
      */
-    void loadEmails(Folder f);
+    void loadEmails(final Folder f);
 
     /**
      * Changes the root directory of the application, and initializes the folder
@@ -55,7 +55,7 @@ public interface ApplicationLogicIF {
      * @param file the path to the directory which was selected as the new root
      * directory of the application.
      */
-    void changeDirectory(File file);
+    void changeDirectory(final File file);
 
     /**
      * Saves the email objects of the selected folder into the given directory.
@@ -63,5 +63,5 @@ public interface ApplicationLogicIF {
      * @param file the path to the directory in which the email objects should
      * be saved.
      */
-    void saveEmails(File file);
+    void saveEmails(final File file);
 }

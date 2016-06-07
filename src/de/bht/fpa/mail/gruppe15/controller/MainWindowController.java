@@ -52,6 +52,7 @@ public class MainWindowController implements Initializable {
     private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
     /* ArrayList to save the history. */
     private final ArrayList<File> historyList = new ArrayList<>();
+    /* OberservableList to save the loaded emails. */
     private final ObservableList<Email> emailList = FXCollections.observableArrayList();
     /* Declaration of the needed managers for handling folders and emails */
     private FolderManagerIF folderManager;
@@ -200,8 +201,8 @@ public class MainWindowController implements Initializable {
      *
      */
     private void configureMenu() {
-        menuBar.getMenus().stream().forEach((Menu m) -> {
-            m.getItems().stream().forEach((mi) -> {
+        menuBar.getMenus().stream().forEach((final Menu m) -> {
+            m.getItems().stream().forEach((final MenuItem mi) -> {
                 mi.setOnAction((e) -> menuEvents(e));
             });
         });
@@ -281,13 +282,16 @@ public class MainWindowController implements Initializable {
      *
      */
     private void mailSaver() {
-        DirectoryChooser dc = new DirectoryChooser();
+        final DirectoryChooser dc;
+        dc = new DirectoryChooser();
         dc.setTitle("Save...");
         dc.setInitialDirectory(ROOT_PATH);
-        Stage saverStage = new Stage(StageStyle.UTILITY);
-        File selectedDir = dc.showDialog(saverStage);
-        if(selectedDir != null){
-            emailManager.saveEmails(emailList, selectedDir);     
+        final Stage saverStage;
+        saverStage = new Stage(StageStyle.UTILITY);
+        final File selectedDir;
+        selectedDir = dc.showDialog(saverStage);
+        if (selectedDir != null) {
+            emailManager.saveEmails(emailList, selectedDir);
         }
     }
 
@@ -319,9 +323,15 @@ public class MainWindowController implements Initializable {
         emailView.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> showMailContent((Email) new_val));
     }
 
+    /**
+     * Method which fills the labels and the textarea with content taken from
+     * the currently selected Email which is passed to it.
+     *
+     * @param selectedEmail The email which contents shall be shown.
+     */
     private void showMailContent(final Email selectedEmail) {
         if (selectedEmail != null) {
-            Email email = selectedEmail;
+            final Email email = selectedEmail;
             senderLabel.setText(email.getSender());
             subjectLabel.setText(email.getSubject());
             receivedLabel.setText(email.getReceived());
@@ -358,6 +368,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Method to resets the details shown from a selected xml email and to clear
+     * the emailList. Needed if root directory gets changed.
+     *
+     */
     private void resetMailDetails() {
         emailList.clear();
         searchInput.setText("");
@@ -369,12 +384,32 @@ public class MainWindowController implements Initializable {
         outputArea.setText("");
     }
 
+    /**
+     * Method which configures the Search.
+     *
+     * An Listener gets added for the search field. Everytime something new is
+     * written into it. The written value gets passed to the method to search
+     * for the value.
+     *
+     */
     private void configureSearch() {
         searchInput.textProperty().addListener((obs, old_val, new_val) -> search(new_val));
     }
 
-    private void search(String input) {
-        final ObservableList filteredMails = (ObservableList) emailManager.search(emailList, input);
+    /**
+     * Method to configure what happens when something is searched.
+     *
+     * The input and the current emailList gets checked through and saved in an
+     * observableList. Afterwards the emailView gets the items set to show the
+     * items of the observablelist.
+     *
+     * The Result Counter gets modified depending on how much filtered mails are
+     * present.
+     *
+     */
+    private void search(final String input) {
+        final ObservableList filteredMails;
+        filteredMails = (ObservableList) emailManager.search(emailList, input);
         emailView.setItems(filteredMails);
         resultCount.setText("(" + filteredMails.size() + ")");
         if (input.trim().equals("")) {

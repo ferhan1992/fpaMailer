@@ -98,13 +98,13 @@ public class HistoryWindowController implements Initializable {
             System.out.println("Error: No directory of history choosen...");
         }
     }
-    
+
     /**
      * Method which interacts with the passed button, gets the Window of the
      * button and closes it.
-     * 
+     *
      * @param button the pressed Button which shall close the window.
-     * 
+     *
      */
     private void close(Button button) {
         final Stage historyStage;

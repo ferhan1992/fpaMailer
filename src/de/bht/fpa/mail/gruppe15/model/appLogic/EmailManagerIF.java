@@ -27,7 +27,7 @@ public interface EmailManagerIF {
      * @param selectedDir the directory in which the email objects should be
      * saved.
      */
-    public void saveEmails(ObservableList<Email> emailList, File selectedDir);
+    public void saveEmails(final ObservableList<Email> emailList, final File selectedDir);
 
     /**
      * Searches for all emails in the selected folder that contain the given
