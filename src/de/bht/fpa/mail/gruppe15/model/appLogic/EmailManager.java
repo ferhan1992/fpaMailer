@@ -30,7 +30,7 @@ public class EmailManager implements EmailManagerIF {
             filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
             for (final File fi : file.listFiles(filter)) {
                 final Email email = JAXB.unmarshal(fi, Email.class);
-                if (checkEmailContent(email)) {
+                if (checkEmailFormat(email)) {
                     f.addEmail(email);
                 }
             }
@@ -44,12 +44,11 @@ public class EmailManager implements EmailManagerIF {
      * @param email The XML File which gets checked.
      * @return boolean
      */
-    private boolean checkEmailContent(final Email email) {
+    private boolean checkEmailFormat(final Email email) {
         return !(email.getSubject() == null
                 || email.getText() == null
-                || email.getReceived() == null
-                || email.getSent() == null
                 || email.getReceiver() == null
-                || email.getSender() == null);
+                || email.getSender() == null
+                || email.getImportance() == null);
     }
 }

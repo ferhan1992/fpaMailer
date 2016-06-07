@@ -14,14 +14,19 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -44,6 +49,7 @@ public class MainWindowController implements Initializable {
     private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
     /* ArrayList to save the history. */
     private final ArrayList<File> historyList = new ArrayList<>();
+    private final ObservableList<Email> emailList = FXCollections.observableArrayList();
     /* Declaration of the needed managers for handling folders and emails */
     private FolderManagerIF folderManager;
     private final EmailManagerIF emailManager = new EmailManager();
@@ -56,6 +62,20 @@ public class MainWindowController implements Initializable {
     private MenuItem menuItemOpen;
     @FXML
     private MenuItem menuItemHistory;
+    @FXML
+    private TableView emailView;
+    @FXML
+    private TableColumn<Email, String> importanceColumn;
+    @FXML
+    private TableColumn<Email, String> receivedColumn;
+    @FXML
+    private TableColumn<Email, String> readColumn;
+    @FXML
+    private TableColumn<Email, String> senderColumn;
+    @FXML
+    private TableColumn<Email, String> recipientsColumn;
+    @FXML
+    private TableColumn<Email, String> subjectColumn;
 
     /**
      * Initializes the controller class. Starts configuring the TreeView with
@@ -69,6 +89,7 @@ public class MainWindowController implements Initializable {
     public void initialize(final URL url, final ResourceBundle rb) {
         configureTree(ROOT_PATH);
         configureMenu();
+        configureTable();
         dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> listMails(new_val));
     }
 
@@ -240,8 +261,26 @@ public class MainWindowController implements Initializable {
     }
 
     /**
-     * Method to print the emails found in the directory of the chosen treeitem
-     * if it is not null.
+     * Method for the main configuration of the TableView and the Columns.
+     *
+     * Each Column gets his cell value assignment in this method and the
+     * standard sort configuration is set.
+     *
+     */
+    private void configureTable() {
+        importanceColumn.setCellValueFactory(new PropertyValueFactory<>("importance"));
+        receivedColumn.setCellValueFactory(new PropertyValueFactory<>("received"));
+        readColumn.setCellValueFactory(new PropertyValueFactory<>("read"));
+        senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
+        recipientsColumn.setCellValueFactory(new PropertyValueFactory<>("receiverTo"));
+        subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        
+        //TODO = SETTING THE STANDARD SORTING.
+    }
+
+    /**
+     * Method to print and list the emails found in the directory of the chosen
+     * treeitem if it is not null.
      *
      */
     private void listMails(final TreeItem<Component> target) {
@@ -249,6 +288,13 @@ public class MainWindowController implements Initializable {
             final Folder f;
             f = (Folder) target.getValue();
             emailManager.loadContent(f);
+
+            emailList.clear();
+            if (f.getEmails().size() > 0) {
+                emailList.addAll(f.getEmails());
+                emailView.setItems(emailList);
+            }
+
             System.out.println("===========================================================================================================================================");
             System.out.println("Selected directory: " + f.getPath());
             System.out.println("Number of E-Mails: " + f.getEmails().size());
