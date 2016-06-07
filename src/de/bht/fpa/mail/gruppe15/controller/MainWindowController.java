@@ -353,18 +353,10 @@ public class MainWindowController implements Initializable {
     }
 
     private void search(String input) {
-        final ObservableList filteredMails = FXCollections.observableArrayList();
-        emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getText().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
-            filteredMails.add(email);
-        });
+        final ObservableList filteredMails = (ObservableList) emailManager.search(emailList, input);
         emailView.setItems(filteredMails);
         resultCount.setText("(" + filteredMails.size() + ")");
-        if (searchInput.getText().equals("")) {
+        if (input.trim().equals("")) {
             resultCount.setText("");
         }
     }

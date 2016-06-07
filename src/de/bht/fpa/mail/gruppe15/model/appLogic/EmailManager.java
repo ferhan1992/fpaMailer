@@ -4,6 +4,9 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.xml.bind.JAXB;
 
 /**
@@ -50,5 +53,27 @@ public class EmailManager implements EmailManagerIF {
                 || email.getReceiver() == null
                 || email.getSender() == null
                 || email.getImportance() == null);
+    }
+
+    /**
+     * Searches for all emails in the selected folder that contain the given
+     * pattern.
+     *
+     * @param emailList List of loaded Emails
+     * @param input Input in search field.
+     * @return a list of all emails that contain the pattern
+     */
+    @Override
+    public ObservableList<Email> search(final ObservableList<Email> emailList, final String input) {
+        final ObservableList filteredMails = FXCollections.observableArrayList();
+        emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getText().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
+            filteredMails.add(email);
+        });
+        return filteredMails;
     }
 }
