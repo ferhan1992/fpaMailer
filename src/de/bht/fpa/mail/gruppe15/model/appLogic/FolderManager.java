@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.data.Component;
+import de.bht.fpa.mail.gruppe15.model.data.FileElement;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 
@@ -48,6 +49,10 @@ public class FolderManager implements FolderManagerIF {
                         y = new Folder(fi.getAbsoluteFile(), true);
                         f.addComponent(y);
                     }
+                } else if (fi.isFile()) {
+                    final Component y;
+                    y = new FileElement(fi.getAbsoluteFile());
+                    f.addComponent(y);
                 }
             }
         }
