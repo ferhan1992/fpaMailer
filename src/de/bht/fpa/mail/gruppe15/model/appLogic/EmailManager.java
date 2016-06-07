@@ -4,7 +4,6 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -54,18 +53,18 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
-        emailList.stream().forEach((final Email email) -> {
-            try {
-                JAXBContext jaxbContext;
-                jaxbContext = JAXBContext.newInstance(Email.class);
-                Marshaller jaxbMarshaller;
-                jaxbMarshaller = jaxbContext.createMarshaller();
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-                jaxbMarshaller.marshal(email, selectedDir);
-            } catch (JAXBException ex) {
-                Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            JAXBContext jaxbContext;
+            jaxbContext = JAXBContext.newInstance(Email.class);
+            Marshaller jaxbMarshaller;
+            jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            for (Email email : emailList) {
+                jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/" + email.getSubject() + ".xml"));
             }
-        });
+        } catch (Exception ex) {
+            Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
