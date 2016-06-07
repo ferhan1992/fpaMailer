@@ -64,6 +64,8 @@ public class MainWindowController implements Initializable {
     @FXML
     private MenuItem menuItemOpen;
     @FXML
+    private MenuItem menuItemSave;
+    @FXML
     private MenuItem menuItemHistory;
     @FXML
     private TableView emailView;
@@ -220,6 +222,9 @@ public class MainWindowController implements Initializable {
         if (e.getSource() == menuItemHistory) {
             showHistory();
         }
+        if (e.getSource() == menuItemSave) {
+            mailSaver();
+        }
     }
 
     /**
@@ -271,6 +276,22 @@ public class MainWindowController implements Initializable {
     }
 
     /**
+     * Method to Save every Email in the current selected dir as XML Files in a
+     * chosen directory.
+     *
+     */
+    private void mailSaver() {
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Save...");
+        dc.setInitialDirectory(ROOT_PATH);
+        Stage saverStage = new Stage(StageStyle.UTILITY);
+        File selectedDir = dc.showDialog(saverStage);
+        if(selectedDir != null){
+            emailManager.saveEmails(emailList, selectedDir);     
+        }
+    }
+
+    /**
      * Method to get the historyList.
      *
      * @return Returns the history list as an ArrayList.
@@ -318,14 +339,14 @@ public class MainWindowController implements Initializable {
         if (target != null) {
             final Folder f;
             f = (Folder) target.getValue();
-            emailManager.loadContent(f);
+            emailManager.loadEmails(f);
             resetMailDetails();
             if (f.getEmails().size() > 0) {
                 emailList.addAll(f.getEmails());
                 emailView.setItems(emailList);
                 showItems(f, target);
             }
-            
+
             //System.out.println("===========================================================================================================================================");
             //System.out.println("Selected directory: " + f.getPath());
             //System.out.println("Number of E-Mails: " + f.getEmails().size());

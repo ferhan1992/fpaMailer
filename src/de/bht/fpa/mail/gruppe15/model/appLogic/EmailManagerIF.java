@@ -2,7 +2,7 @@ package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
-import java.util.List;
+import java.io.File;
 import javafx.collections.ObservableList;
 
 /**
@@ -18,8 +18,17 @@ public interface EmailManagerIF {
      *
      * @param f the folder into which the content of emails should be loaded
      */
-    void loadContent(final Folder f);
-    
+    void loadEmails(final Folder f);
+
+    /**
+     * Saves the email objects of the selected folder into the given directory.
+     *
+     * @param emailList The list of Emails in current Folder.
+     * @param selectedDir the directory in which the email objects should be
+     * saved.
+     */
+    public void saveEmails(ObservableList<Email> emailList, File selectedDir);
+
     /**
      * Searches for all emails in the selected folder that contain the given
      * pattern.
@@ -29,4 +38,5 @@ public interface EmailManagerIF {
      * @return a list of all emails that contain the pattern
      */
     public ObservableList<Email> search(final ObservableList<Email> emailList, final String input);
+
 }

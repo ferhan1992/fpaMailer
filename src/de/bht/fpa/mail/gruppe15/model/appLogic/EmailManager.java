@@ -4,10 +4,17 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 /**
  * This class manages emails and their content which is loaded from a given
@@ -25,7 +32,7 @@ public class EmailManager implements EmailManagerIF {
      * @param f the folder into which the content of emails should be loaded
      */
     @Override
-    public void loadContent(final Folder f) {
+    public void loadEmails(final Folder f) {
         if (f.getEmails().isEmpty()) {
             final File file;
             file = new File(f.getPath());
@@ -38,6 +45,27 @@ public class EmailManager implements EmailManagerIF {
                 }
             }
         }
+    }
+
+    /**
+     * Saves the email objects of the selected folder into the given directory.
+     *
+     * @param emailList The list of Emails in current Folder.
+     * @param selectedDir the directory in which the email objects should be
+     * saved.
+     */
+    @Override
+    public void saveEmails(ObservableList<Email> emailList, File selectedDir) {
+        emailList.stream().forEach((email) -> {
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Email.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                jaxbMarshaller.marshal(email, selectedDir);
+            } catch (JAXBException ex) {
+                Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     /**

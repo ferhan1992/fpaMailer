@@ -81,6 +81,7 @@
           <Menu id="menuFile" fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
               <MenuItem id="menuItemOpen" fx:id="menuItemOpen" mnemonicParsing="false" text="Open" />
+                  <MenuItem id="menuItemSave" fx:id="menuItemSave" mnemonicParsing="false" text="Save" />
                   <MenuItem id="menuItemHistory" fx:id="menuItemHistory" mnemonicParsing="false" text="History" />
             </items>
           </Menu>
