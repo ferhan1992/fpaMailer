@@ -29,8 +29,27 @@ public class EmailManager implements EmailManagerIF {
             FileFilter filter;
             filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
             for (final File fi : file.listFiles(filter)) {
-                f.addEmail(JAXB.unmarshal(fi, Email.class));
+                final Email email = JAXB.unmarshal(fi, Email.class);
+                if (checkEmailContent(email)) {
+                    f.addEmail(email);
+                }
             }
         }
+    }
+
+    /**
+     * Method to check the passed XML file if it contains all the needed
+     * variables to be accepted as a mail.
+     *
+     * @param email The XML File which gets checked.
+     * @return boolean
+     */
+    private boolean checkEmailContent(final Email email) {
+        return !(email.getSubject() == null
+                || email.getText() == null
+                || email.getReceived() == null
+                || email.getSent() == null
+                || email.getReceiver() == null
+                || email.getSender() == null);
     }
 }
