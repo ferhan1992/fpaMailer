@@ -25,8 +25,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class of the main window.
@@ -211,19 +213,19 @@ public class MainWindowController implements Initializable {
      *
      */
     private void showHistory() {
+        final Stage historyStage;
+        historyStage = new Stage(StageStyle.UTILITY);
+        historyStage.setTitle("Directory history...");
+        final FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/HistoryWindow.fxml"));
+        loader.setController(new HistoryWindowController(this));
         try {
-            final FXMLLoader loader;
-            loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/HistoryWindow.fxml"));
-            loader.setController(new HistoryWindowController(this));
-            final Parent root;
-            root = (Parent) loader.load();
+            Pane historyPane = (Pane) loader.load();
             final Scene scene;
-            scene = new Scene(root);
-            final Stage historyStage;
-            historyStage = new Stage();
-            historyStage.setTitle("Directory history...");
+            scene = new Scene(historyPane);
             historyStage.setScene(scene);
             historyStage.show();
+
         } catch (Exception ex) {
             System.out.println(ex.getLocalizedMessage());
         }
