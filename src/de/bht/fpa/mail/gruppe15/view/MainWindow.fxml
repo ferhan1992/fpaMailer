@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -22,7 +23,7 @@
                     <items>
                       <AnchorPane id="rightUpperPanel" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView id="emailView" fx:id="emailView" layoutX="206.0" layoutY="36.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView id="emailView" fx:id="emailView" layoutX="206.0" layoutY="56.0" prefHeight="215.0" prefWidth="611.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="56.0">
                                 <columns>
                                   <TableColumn id="importanceColumn" fx:id="importanceColumn" editable="false" minWidth="-1.0" prefWidth="75.0" text="Importance" />
                                   <TableColumn id="receivedColumn" fx:id="receivedColumn" editable="false" minWidth="-1.0" prefWidth="75.0" text="Received" />
@@ -35,8 +36,39 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
+                              <Text id="searchText" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="558.13671875" AnchorPane.topAnchor="20.0" />
+                              <TextField id="searchInput" fx:id="searchInput" layoutX="75.0" layoutY="16.0" prefHeight="25.0" prefWidth="427.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="16.0" />
+                              <Label id="resultCount" fx:id="resultCount" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane id="rightLowerPanel" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Text id="subject" layoutX="14.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text id="sender" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sender:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text id="received" layoutX="14.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Received:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="70.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text id="receiver" layoutX="15.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Receiver:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Label id="senderLabel" fx:id="senderLabel" layoutX="117.0" layoutY="9.0" prefHeight="17.0" prefWidth="515.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                              <Label id="subjectLabel" fx:id="subjectLabel" prefHeight="17.0" prefWidth="515.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+                              <Label id="receivedLabel" fx:id="receivedLabel" prefHeight="17.0" prefWidth="515.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0" />
+                              <Label id="receiverLabel" fx:id="receiverLabel" prefHeight="17.0" prefWidth="515.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0" />
+                              <TextArea id="outputArea" fx:id="outputArea" editable="false" layoutX="143.0" layoutY="49.0" prefHeight="136.0" prefWidth="591.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="124.0" />
                            </children></AnchorPane>
-                      <AnchorPane id="rightLowerPanel" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                     </items>
                   </SplitPane>
                </children>

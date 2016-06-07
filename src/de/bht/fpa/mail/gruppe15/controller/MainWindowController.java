@@ -14,16 +14,20 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.ArrayList;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -76,6 +80,20 @@ public class MainWindowController implements Initializable {
     private TableColumn<Email, String> recipientsColumn;
     @FXML
     private TableColumn<Email, String> subjectColumn;
+    @FXML
+    private TextField searchInput;
+    @FXML
+    private Label resultCount;
+    @FXML
+    private Label senderLabel;
+    @FXML
+    private Label subjectLabel;
+    @FXML
+    private Label receivedLabel;
+    @FXML
+    private Label receiverLabel;
+    @FXML
+    private TextArea outputArea;
 
     /**
      * Initializes the controller class. Starts configuring the TreeView with
@@ -90,6 +108,7 @@ public class MainWindowController implements Initializable {
         configureTree(ROOT_PATH);
         configureMenu();
         configureTable();
+        configureSearch();
         dirTree.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> listMails(new_val));
     }
 
@@ -121,6 +140,7 @@ public class MainWindowController implements Initializable {
         rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
         showItems(folderManager.getTopFolder(), rootItem);
         dirTree.setRoot(rootItem);
+        resetMailDetails();
     }
 
     /**
@@ -274,8 +294,20 @@ public class MainWindowController implements Initializable {
         senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
         recipientsColumn.setCellValueFactory(new PropertyValueFactory<>("receiverTo"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
-        
+
         //TODO = SETTING THE STANDARD SORTING.
+        emailView.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> showMailContent((Email) new_val));
+    }
+
+    private void showMailContent(final Email selectedEmail) {
+        if (selectedEmail != null) {
+            Email email = selectedEmail;
+            senderLabel.setText(email.getSender());
+            subjectLabel.setText(email.getSubject());
+            receivedLabel.setText(email.getReceived());
+            receiverLabel.setText(email.getReceiver());
+            outputArea.setText(email.getText());
+        }
     }
 
     /**
@@ -288,21 +320,53 @@ public class MainWindowController implements Initializable {
             final Folder f;
             f = (Folder) target.getValue();
             emailManager.loadContent(f);
-
-            emailList.clear();
+            resetMailDetails();
             if (f.getEmails().size() > 0) {
                 emailList.addAll(f.getEmails());
                 emailView.setItems(emailList);
+                showItems(f, target);
             }
+            
+            //System.out.println("===========================================================================================================================================");
+            //System.out.println("Selected directory: " + f.getPath());
+            //System.out.println("Number of E-Mails: " + f.getEmails().size());
+            //if (f.getEmails().size() > 0) {
+            //    f.getEmails().stream().forEach((final Email email) -> {
+            //        System.out.println(email.toString());
+            //    });
+            //}
+        }
+    }
 
-            System.out.println("===========================================================================================================================================");
-            System.out.println("Selected directory: " + f.getPath());
-            System.out.println("Number of E-Mails: " + f.getEmails().size());
-            if (f.getEmails().size() > 0) {
-                f.getEmails().stream().forEach((final Email email) -> {
-                    System.out.println(email.toString());
-                });
-            }
+    private void resetMailDetails() {
+        emailList.clear();
+        searchInput.setText("");
+        resultCount.setText("");
+        senderLabel.setText("");
+        subjectLabel.setText("");
+        receivedLabel.setText("");
+        receiverLabel.setText("");
+        outputArea.setText("");
+    }
+
+    private void configureSearch() {
+        searchInput.textProperty().addListener((obs, old_val, new_val) -> search(new_val));
+    }
+
+    private void search(String input) {
+        final ObservableList filteredMails = FXCollections.observableArrayList();
+        emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getText().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
+                || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
+            filteredMails.add(email);
+        });
+        emailView.setItems(filteredMails);
+        resultCount.setText("(" + filteredMails.size() + ")");
+        if (searchInput.getText().equals("")) {
+            resultCount.setText("");
         }
     }
 }
