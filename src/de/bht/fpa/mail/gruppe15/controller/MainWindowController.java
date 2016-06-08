@@ -356,15 +356,14 @@ public class MainWindowController implements Initializable {
                 emailView.setItems(emailList);
                 showItems(f, target);
             }
-
-            //System.out.println("===========================================================================================================================================");
-            //System.out.println("Selected directory: " + f.getPath());
-            //System.out.println("Number of E-Mails: " + f.getEmails().size());
-            //if (f.getEmails().size() > 0) {
-            //    f.getEmails().stream().forEach((final Email email) -> {
-            //        System.out.println(email.toString());
-            //    });
-            //}
+            System.out.println("===========================================================================================================================================");
+            System.out.println("Selected directory: " + f.getPath());
+            System.out.println("Number of E-Mails: " + f.getEmails().size());
+            if (f.getEmails().size() > 0) {
+                f.getEmails().stream().forEach((final Email email) -> {
+                    System.out.println(email.toString());
+                });
+            }
         }
     }
 
