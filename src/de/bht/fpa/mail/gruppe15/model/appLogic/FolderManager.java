@@ -42,13 +42,8 @@ public class FolderManager implements FolderManagerIF {
             for (final File fi : file.listFiles()) {
                 if (fi.isDirectory()) {
                     final Component y;
-                    if (fi.list().length == 0) {
-                        y = new Folder(fi.getAbsoluteFile(), false);
-                        f.addComponent(y);
-                    } else if (fi.list().length > 0) {
-                        y = new Folder(fi.getAbsoluteFile(), true);
-                        f.addComponent(y);
-                    }
+                    y = new Folder(fi.getAbsoluteFile(), hasSubDir(fi));
+                    f.addComponent(y);
                 } else if (fi.isFile()) {
                     final Component y;
                     y = new FileElement(fi.getAbsoluteFile());
@@ -56,6 +51,22 @@ public class FolderManager implements FolderManagerIF {
                 }
             }
         }
+    }
+    
+    /**
+     * Method to check, whether the file contains subfolder or not.
+     * Returns true if when containing subfolders and false if not.
+     *
+     * @param fi the file which shall be checked for subdirectorys.
+     * @return boolean
+     */
+    private boolean hasSubDir(File fi) {
+        for (File x : fi.listFiles()) {
+            if (x.isDirectory()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

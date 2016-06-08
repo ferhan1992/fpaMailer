@@ -46,7 +46,7 @@ public class Folder extends Component {
 
     @Override
     public String toString() {
-        if (!this.emails.isEmpty()) {
+        if (!this.getEmails().isEmpty()) {
             return this.getName() + " (" + this.emails.size() + ")";
         }
         return this.getName();
