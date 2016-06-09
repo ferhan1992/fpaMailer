@@ -394,7 +394,7 @@ public class MainWindowController implements Initializable {
      *
      */
     private void configureSearch() {
-        searchInput.textProperty().addListener((obs, old_val, new_val) -> search(new_val));
+        searchInput.textProperty().addListener((obs, old_val, new_val) -> searchEvent(new_val));
     }
 
     /**
@@ -408,7 +408,7 @@ public class MainWindowController implements Initializable {
      * present.
      *
      */
-    private void search(final String input) {
+    private void searchEvent(final String input) {
         final ObservableList filteredMails;
         filteredMails = (ObservableList) emailManager.search(emailList, input);
         emailView.setItems(filteredMails);
