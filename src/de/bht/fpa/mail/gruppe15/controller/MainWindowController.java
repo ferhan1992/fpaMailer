@@ -435,6 +435,15 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Method to configure how the comparison of the date Strings shall be
+     * executed.
+     *
+     * @param receivedString1 variable holding a date as a String.
+     * @param receivedString2 variable holding another date as a String.
+     * @return int
+     *
+     */
     private int compareReceived(final String receivedString1, final String receivedString2) {
         Date receivedDate1 = null;
         Date receivedDate2 = null;
