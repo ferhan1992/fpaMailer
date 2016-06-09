@@ -355,6 +355,8 @@ public class MainWindowController implements Initializable {
                 emailList.addAll(f.getEmails());
                 emailView.setItems(emailList);
                 showItems(f, target);
+                target.setValue(null);
+                target.setValue(f);
             }
             System.out.println("===========================================================================================================================================");
             System.out.println("Selected directory: " + f.getPath());
