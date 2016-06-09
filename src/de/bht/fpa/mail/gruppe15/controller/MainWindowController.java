@@ -110,7 +110,7 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(final URL url, final ResourceBundle rb) {
-        configureTree(ROOT_PATH);
+        configureTree();
         configureMenu();
         configureTable();
         configureSearch();
@@ -134,9 +134,8 @@ public class MainWindowController implements Initializable {
      * print the emails found in the directory and the root of the dirTree gets
      * the root treeitem initialized before.
      *
-     * @param root the file which shall be set to be shown in the TreeView.
      */
-    public void configureTree(final File root) {
+    public void configureTree() {
             final TreeItem<Component> rootItem;
             rootItem = new TreeItem<>(appLogic.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
             rootItem.setExpanded(true);
@@ -254,7 +253,7 @@ public class MainWindowController implements Initializable {
         if (file != null) {
             /* && !(historyList.contains(file))) { */
             appLogic.changeDirectory(file);
-            configureTree(file);
+            configureTree();
             historyList.add(file);
         }
     }

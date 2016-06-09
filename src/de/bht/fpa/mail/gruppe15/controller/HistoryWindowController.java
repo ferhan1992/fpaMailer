@@ -94,7 +94,7 @@ public class HistoryWindowController implements Initializable {
         if (listViewHistory.getSelectionModel().getSelectedItem() != null) {
             final File fi = (File) listViewHistory.getSelectionModel().getSelectedItem();
             mainWindowController.getAppLogic().changeDirectory(fi);
-            mainWindowController.configureTree(fi);
+            mainWindowController.configureTree();
             close(buttonOK);
         } else {
             System.out.println("Error: No directory of history choosen...");
