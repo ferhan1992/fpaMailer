@@ -15,12 +15,12 @@ public abstract class Component {
     // name of the component (without path)
     private String name;
 
-    public  Component(File path) {
+    public  Component(final File path) {
         this.path = path.getAbsolutePath();
         this.name = path.getName();
     }
 
-    public void addComponent(Component comp) {
+    public void addComponent(final Component comp) {
         throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -35,11 +35,11 @@ public abstract class Component {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setPath(String p) {
+    public void setPath(final String p) {
         path = p;
     }
 
@@ -47,6 +47,7 @@ public abstract class Component {
         return path;
     }
 
+    @Override
     public String toString() {
         return name;
     }

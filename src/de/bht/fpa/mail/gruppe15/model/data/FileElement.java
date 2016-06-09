@@ -10,7 +10,7 @@ import java.io.File;
 
 public class FileElement extends Component {
 
-    public FileElement(File path) {
+    public FileElement(final File path) {
         super(path);
     }
 

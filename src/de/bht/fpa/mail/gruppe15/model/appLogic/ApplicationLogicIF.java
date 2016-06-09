@@ -60,8 +60,9 @@ public interface ApplicationLogicIF {
     /**
      * Saves the email objects of the selected folder into the given directory.
      *
-     * @param file the path to the directory in which the email objects should
-     * be saved.
+     * @param emailList The list of Emails in current Folder.
+     * @param selectedDir the directory in which the email objects should be
+     * saved.
      */
-    void saveEmails(final File file);
+    void saveEmails(final ObservableList<Email> emailList, final File selectedDir);
 }

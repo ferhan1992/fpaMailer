@@ -1,9 +1,7 @@
 package de.bht.fpa.mail.gruppe15.controller;
 
-import de.bht.fpa.mail.gruppe15.model.appLogic.EmailManager;
-import de.bht.fpa.mail.gruppe15.model.appLogic.EmailManagerIF;
-import de.bht.fpa.mail.gruppe15.model.appLogic.FolderManager;
-import de.bht.fpa.mail.gruppe15.model.appLogic.FolderManagerIF;
+import de.bht.fpa.mail.gruppe15.model.appLogic.ApplicationLogic;
+import de.bht.fpa.mail.gruppe15.model.appLogic.ApplicationLogicIF;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -61,8 +59,7 @@ public class MainWindowController implements Initializable {
     /* OberservableList to save the loaded emails. */
     private final ObservableList<Email> emailList = FXCollections.observableArrayList();
     /* Declaration of the needed managers for handling folders and emails */
-    private FolderManagerIF folderManager;
-    private final EmailManagerIF emailManager = new EmailManager();
+    private final ApplicationLogicIF appLogic = new ApplicationLogic(ROOT_PATH);
 
     @FXML
     private TreeView<Component> dirTree;
@@ -140,17 +137,14 @@ public class MainWindowController implements Initializable {
      * @param root the file which shall be set to be shown in the TreeView.
      */
     public void configureTree(final File root) {
-        if (root != null) {
-            folderManager = new FolderManager(root);
             final TreeItem<Component> rootItem;
-            rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+            rootItem = new TreeItem<>(appLogic.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
             rootItem.setExpanded(true);
             rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
             rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
-            showItems(folderManager.getTopFolder(), rootItem);
+            showItems(appLogic.getTopFolder(), rootItem);
             dirTree.setRoot(rootItem);
             resetMailDetails();
-        }
     }
 
     /**
@@ -189,7 +183,7 @@ public class MainWindowController implements Initializable {
      */
     private void showItems(final Folder f, final TreeItem<Component> parent) {
         if (f != null && parent != null) {
-            folderManager.loadContent(f);
+            appLogic.loadContent(f);
             parent.getChildren().clear();
             f.getComponents().stream().forEach((final Component com) -> {
                 if (com instanceof Folder) {
@@ -259,6 +253,7 @@ public class MainWindowController implements Initializable {
         file = dc.showDialog(stage);
         if (file != null) {
             /* && !(historyList.contains(file))) { */
+            appLogic.changeDirectory(file);
             configureTree(file);
             historyList.add(file);
         }
@@ -282,8 +277,7 @@ public class MainWindowController implements Initializable {
             scene = new Scene(historyPane);
             historyStage.setScene(scene);
             historyStage.show();
-
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             System.out.println(ex.getLocalizedMessage());
         }
     }
@@ -303,7 +297,7 @@ public class MainWindowController implements Initializable {
         final File selectedDir;
         selectedDir = dc.showDialog(saverStage);
         if (selectedDir != null) {
-            emailManager.saveEmails(emailList, selectedDir);
+            appLogic.saveEmails(emailList, selectedDir);
         }
     }
 
@@ -334,7 +328,7 @@ public class MainWindowController implements Initializable {
 
         receivedColumn.setComparator((receivedString1, receivedString2) -> compareReceived(receivedString1, receivedString2));
         emailView.getSortOrder().add(receivedColumn);
-
+        
         emailView.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> showMailContent((Email) new_val));
     }
 
@@ -364,7 +358,7 @@ public class MainWindowController implements Initializable {
         if (target != null) {
             final Folder f;
             f = (Folder) target.getValue();
-            emailManager.loadEmails(f);
+            appLogic.loadEmails(f);
             resetMailDetails();
             if (f.getEmails().size() > 0) {
                 emailList.addAll(f.getEmails());
@@ -426,7 +420,7 @@ public class MainWindowController implements Initializable {
     private void searchEvent(final String input) {
         if (input != null) {
             final ObservableList filteredMails;
-            filteredMails = (ObservableList) emailManager.search(emailList, input);
+            filteredMails = (ObservableList) appLogic.search(emailList, input);
             emailView.setItems(filteredMails);
             resultCount.setText("(" + filteredMails.size() + ")");
             if (input.trim().equals("")) {
@@ -448,14 +442,23 @@ public class MainWindowController implements Initializable {
         Date receivedDate1 = null;
         Date receivedDate2 = null;
         if (receivedString1 != null && receivedString2 != null) {
-            final DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
+            final DateFormat format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
             try {
-                receivedDate1 = FORMAT.parse(receivedString1);
-                receivedDate2 = FORMAT.parse(receivedString2);
-            } catch (ParseException ex) {
+                receivedDate1 = format.parse(receivedString1);
+                receivedDate2 = format.parse(receivedString2);
+            } catch (final ParseException ex) {
                 Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return receivedDate1.compareTo(receivedDate2);
+    }
+    
+    /**
+     * Method to get the current instance of the application Logic.
+     * 
+     * @return ApplicationLogicIF
+     */
+    public ApplicationLogicIF getAppLogic(){
+        return this.appLogic;
     }
 }

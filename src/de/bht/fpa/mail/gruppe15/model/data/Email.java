@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Email {
 
-    private static DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
+    private static final DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
     private String sender;
     private ArrayList<String> receiverTo;
     private ArrayList<String> receiverCC;
@@ -35,9 +35,9 @@ public class Email {
     private boolean read;
 
     public Email() {
-        this.receiverTo = new ArrayList<String>();
-        this.receiverCC = new ArrayList<String>();
-        this.receiverBCC = new ArrayList<String>();
+        this.receiverTo = new ArrayList<>();
+        this.receiverCC = new ArrayList<>();
+        this.receiverBCC = new ArrayList<>();
         this.subject = "";
         this.text = "";
         this.importance = Importance.LOW;
@@ -46,11 +46,11 @@ public class Email {
         this.read = false;
     }
 
-    public Email(String sender, ArrayList<String> receiverTo, String subject, String txt, Importance imp) {
+    public Email(final String sender, final ArrayList<String> receiverTo, final String subject, final String txt, Importance imp) {
         this.sender = sender;
         this.receiverTo = receiverTo;
-        this.receiverCC = new ArrayList<String>();
-        this.receiverBCC = new ArrayList<String>();
+        this.receiverCC = new ArrayList<>();
+        this.receiverBCC = new ArrayList<>();
         this.subject = subject;
         this.text = txt;
         if (imp != null) {
@@ -67,7 +67,7 @@ public class Email {
         return sender;
     }
 
-    public void setSender(String s) {
+    public void setSender(final String s) {
         sender = s;
     }
 
@@ -75,7 +75,7 @@ public class Email {
         return subject;
     }
 
-    public void setSubject(String b) {
+    public void setSubject(final String b) {
         subject = b;
     }
 
@@ -83,7 +83,7 @@ public class Email {
         return text;
     }
 
-    public void setText(String t) {
+    public void setText(final String t) {
         text = t;
     }
 
@@ -99,8 +99,9 @@ public class Email {
         }
     }
 
-    private String generateString(ArrayList<String> list) {
-        Iterator<String> it = list.iterator();
+    private String generateString(final ArrayList<String> list) {
+        final Iterator<String> it;
+        it = list.iterator();
         String emp = "";
         if (it.hasNext()) {
             emp = it.next();
@@ -112,8 +113,9 @@ public class Email {
     }
 
     public ArrayList<String> generateList(String receiver) {
-        String[] result = receiver.split(", ");
-        ArrayList<String> list = new ArrayList<String>(Arrays.asList(result));
+        final String[] result;
+        result = receiver.split(", ");
+        final ArrayList<String> list = new ArrayList<>(Arrays.asList(result));
         return list;
     }
 
@@ -129,15 +131,15 @@ public class Email {
         return receiverBCC;
     }
 
-    public void setReceiverTo(String r) {
+    public void setReceiverTo(final String r) {
         receiverTo = generateList(r);
     }
 
-    public void setReceiverCC(String r) {
+    public void setReceiverCC(final String r) {
         receiverCC = generateList(r);
     }
 
-    public void setReceiverBCC(String r) {
+    public void setReceiverBCC(final String r) {
         receiverBCC = generateList(r);
     }
 
@@ -154,7 +156,7 @@ public class Email {
     }
 
     public String getReceiver() {
-        String cc = getReceiverCC();
+        final String cc = getReceiverCC();
         String recs = getReceiverTo();
         if (cc.length() != 0) {
             recs = recs + ", " + cc;
@@ -166,7 +168,7 @@ public class Email {
         return read;
     }
 
-    public void setRead(boolean w) {
+    public void setRead(final boolean w) {
         read = w;
     }
 
@@ -174,14 +176,14 @@ public class Email {
         return FORMAT.format(received);
     }
 
-    public void setReceived(Date date) {
+    public void setReceived(final Date date) {
         received = date;
     }
 
-    public void setReceived(String date) {
+    public void setReceived(final String date) {
         try {
             received = FORMAT.parse(date);
-        } catch (ParseException ex) {
+        } catch (final ParseException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -190,20 +192,21 @@ public class Email {
         return FORMAT.format(sent);
     }
 
-    public void setSent(Date date) {
+    public void setSent(final Date date) {
         sent = date;
     }
 
-    public void setSent(String date) {
+    public void setSent(final String date) {
         try {
             sent = FORMAT.parse(date);
-        } catch (ParseException ex) {
+        } catch (final ParseException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
+        final StringBuilder s = new StringBuilder();
         s.append("[Email: ");
         s.append("sender=").append(sender).append(" ");
         s.append("received=").append(getReceived()).append(" ");
@@ -219,7 +222,6 @@ public class Email {
     }
 
     public static enum Importance {
-
         HIGH, NORMAL, LOW
     }
 }

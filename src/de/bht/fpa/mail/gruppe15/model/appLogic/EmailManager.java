@@ -64,7 +64,7 @@ public class EmailManager implements EmailManagerIF {
                 int i = 0;
                 for (Email email : emailList) {
                     i++;
-                    jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/" + i + ".xml"));
+                    jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/mail" + i + ".xml"));
                 }
             } catch (Exception ex) {
                 Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);

@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class Folder extends Component {
 
-    private boolean expandable;
-    private ArrayList<Component> content;
-    private ArrayList<Email> emails;
+    private final boolean expandable;
+    private final ArrayList<Component> content;
+    private final ArrayList<Email> emails;
 
-    public Folder(File path, boolean expandable) {
+    public Folder(final File path, final boolean expandable) {
         super(path);
         this.expandable = expandable;
         content = new ArrayList<Component>();
@@ -27,7 +27,7 @@ public class Folder extends Component {
     }
 
     @Override
-    public void addComponent(Component comp) {
+    public void addComponent(final Component comp) {
         content.add(comp);
     }
 
@@ -40,7 +40,7 @@ public class Folder extends Component {
         return emails;
     }
 
-    public void addEmail(Email message) {
+    public void addEmail(final Email message) {
         emails.add(message);
     }
 
