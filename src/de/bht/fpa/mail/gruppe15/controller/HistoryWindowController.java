@@ -106,9 +106,11 @@ public class HistoryWindowController implements Initializable {
      * @param button the pressed Button which shall close the window.
      *
      */
-    private void close(Button button) {
-        final Stage historyStage;
-        historyStage = (Stage) button.getScene().getWindow();
-        historyStage.close();
+    private void close(final Button button) {
+        if (button != null) {
+            final Stage historyStage;
+            historyStage = (Stage) button.getScene().getWindow();
+            historyStage.close();
+        }
     }
 }

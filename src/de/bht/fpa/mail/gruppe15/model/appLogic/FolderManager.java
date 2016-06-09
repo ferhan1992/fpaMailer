@@ -36,34 +36,38 @@ public class FolderManager implements FolderManagerIF {
      */
     @Override
     public void loadContent(final Folder f) {
-        if (f.getComponents().isEmpty()) {
-            final File file;
-            file = new File(f.getPath());
-            for (final File fi : file.listFiles()) {
-                if (fi.isDirectory()) {
-                    final Component y;
-                    y = new Folder(fi.getAbsoluteFile(), hasSubDir(fi));
-                    f.addComponent(y);
-                } else if (fi.isFile()) {
-                    final Component y;
-                    y = new FileElement(fi.getAbsoluteFile());
-                    f.addComponent(y);
+        if (f != null) {
+            if (f.getComponents().isEmpty()) {
+                final File file;
+                file = new File(f.getPath());
+                for (final File fi : file.listFiles()) {
+                    if (fi.isDirectory()) {
+                        final Component y;
+                        y = new Folder(fi.getAbsoluteFile(), hasSubDir(fi));
+                        f.addComponent(y);
+                    } else if (fi.isFile()) {
+                        final Component y;
+                        y = new FileElement(fi.getAbsoluteFile());
+                        f.addComponent(y);
+                    }
                 }
             }
         }
     }
-    
+
     /**
-     * Method to check, whether the file contains subfolder or not.
-     * Returns true if when containing subfolders and false if not.
+     * Method to check, whether the file contains subfolder or not. Returns true
+     * if when containing subfolders and false if not.
      *
      * @param fi the file which shall be checked for subdirectorys.
      * @return boolean
      */
     private boolean hasSubDir(File fi) {
-        for (File x : fi.listFiles()) {
-            if (x.isDirectory()) {
-                return true;
+        if (fi != null) {
+            for (File x : fi.listFiles()) {
+                if (x.isDirectory()) {
+                    return true;
+                }
             }
         }
         return false;

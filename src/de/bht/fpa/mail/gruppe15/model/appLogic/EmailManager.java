@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 /**
@@ -30,15 +29,17 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void loadEmails(final Folder f) {
-        if (f.getEmails().isEmpty()) {
-            final File file;
-            file = new File(f.getPath());
-            FileFilter filter;
-            filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
-            for (final File fi : file.listFiles(filter)) {
-                final Email email = JAXB.unmarshal(fi, Email.class);
-                if (checkEmailFormat(email)) {
-                    f.addEmail(email);
+        if (f != null) {
+            if (f.getEmails().isEmpty()) {
+                final File file;
+                file = new File(f.getPath());
+                FileFilter filter;
+                filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
+                for (final File fi : file.listFiles(filter)) {
+                    final Email email = JAXB.unmarshal(fi, Email.class);
+                    if (checkEmailFormat(email)) {
+                        f.addEmail(email);
+                    }
                 }
             }
         }
@@ -53,19 +54,21 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
-        try {
-            JAXBContext jaxbContext;
-            jaxbContext = JAXBContext.newInstance(Email.class);
-            Marshaller jaxbMarshaller;
-            jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            int i = 0;
-            for (Email email : emailList) {
-                i++;
-                jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/" + i + ".xml"));
+        if (emailList != null && selectedDir != null) {
+            try {
+                JAXBContext jaxbContext;
+                jaxbContext = JAXBContext.newInstance(Email.class);
+                Marshaller jaxbMarshaller;
+                jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                int i = 0;
+                for (Email email : emailList) {
+                    i++;
+                    jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/" + i + ".xml"));
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -77,11 +80,14 @@ public class EmailManager implements EmailManagerIF {
      * @return boolean
      */
     private boolean checkEmailFormat(final Email email) {
-        return !(email.getSender() == null
-                || email.getImportance() == null
-                || email.getSubject() == null
-                || email.getText() == null
-                || email.getReceiver() == null);
+        if (email != null) {
+            return !(email.getSender() == null
+                    || email.getImportance() == null
+                    || email.getSubject() == null
+                    || email.getText() == null
+                    || email.getReceiver() == null);
+        }
+        return false;
     }
 
     /**
@@ -94,16 +100,19 @@ public class EmailManager implements EmailManagerIF {
      */
     @Override
     public ObservableList<Email> search(final ObservableList<Email> emailList, final String input) {
-        final ObservableList filteredMails;
-        filteredMails = FXCollections.observableArrayList();
-        emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getText().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
-                || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
-            filteredMails.add(email);
-        });
-        return filteredMails;
+        if (emailList != null && input != null) {
+            final ObservableList filteredMails;
+            filteredMails = FXCollections.observableArrayList();
+            emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
+                    || email.getText().toLowerCase().contains(input.trim().toLowerCase())
+                    || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
+                    || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
+                    || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
+                    || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
+                filteredMails.add(email);
+            });
+            return filteredMails;
+        }
+        return null;
     }
 }

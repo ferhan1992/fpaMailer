@@ -13,7 +13,13 @@ import de.bht.fpa.mail.gruppe15.model.data.Component;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,15 +140,17 @@ public class MainWindowController implements Initializable {
      * @param root the file which shall be set to be shown in the TreeView.
      */
     public void configureTree(final File root) {
-        folderManager = new FolderManager(root);
-        final TreeItem<Component> rootItem;
-        rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
-        rootItem.setExpanded(true);
-        rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
-        rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
-        showItems(folderManager.getTopFolder(), rootItem);
-        dirTree.setRoot(rootItem);
-        resetMailDetails();
+        if (root != null) {
+            folderManager = new FolderManager(root);
+            final TreeItem<Component> rootItem;
+            rootItem = new TreeItem<>(folderManager.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+            rootItem.setExpanded(true);
+            rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
+            rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
+            showItems(folderManager.getTopFolder(), rootItem);
+            dirTree.setRoot(rootItem);
+            resetMailDetails();
+        }
     }
 
     /**
@@ -153,13 +161,15 @@ public class MainWindowController implements Initializable {
      *
      */
     private void branchEvents(final TreeModificationEvent<Component> e) {
-        final TreeItem<Component> ti = e.getTreeItem();
-        if (e.wasCollapsed()) {
-            ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
-        }
-        if (e.wasExpanded()) {
-            ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
-            showItems((Folder) ti.getValue(), ti);
+        if (e != null) {
+            final TreeItem<Component> ti = e.getTreeItem();
+            if (e.wasCollapsed()) {
+                ti.setGraphic(new ImageView(FOLDER_ICON_CLOSED));
+            }
+            if (e.wasExpanded()) {
+                ti.setGraphic(new ImageView(FOLDER_ICON_OPEN));
+                showItems((Folder) ti.getValue(), ti);
+            }
         }
     }
 
@@ -178,20 +188,22 @@ public class MainWindowController implements Initializable {
      * @param parent The Parent TreeItem.
      */
     private void showItems(final Folder f, final TreeItem<Component> parent) {
-        folderManager.loadContent(f);
-        parent.getChildren().clear();
-        f.getComponents().stream().forEach((final Component com) -> {
-            if (com instanceof Folder) {
-                final TreeItem<Component> item;
-                item = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
-                if (com.isExpandable()) {
-                    final TreeItem<Component> DUMMY; //DUMMY ITEM
-                    DUMMY = new TreeItem<>();
-                    item.getChildren().add(DUMMY);
+        if (f != null && parent != null) {
+            folderManager.loadContent(f);
+            parent.getChildren().clear();
+            f.getComponents().stream().forEach((final Component com) -> {
+                if (com instanceof Folder) {
+                    final TreeItem<Component> item;
+                    item = new TreeItem<>(com, new ImageView(FOLDER_ICON_CLOSED));
+                    if (com.isExpandable()) {
+                        final TreeItem<Component> DUMMY; //DUMMY ITEM
+                        DUMMY = new TreeItem<>();
+                        item.getChildren().add(DUMMY);
+                    }
+                    parent.getChildren().add(item);
                 }
-                parent.getChildren().add(item);
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -308,7 +320,8 @@ public class MainWindowController implements Initializable {
      * Method for the main configuration of the TableView and the Columns.
      *
      * Each Column gets his cell value assignment in this method and the
-     * standard sort configuration is set.
+     * standard sort configuration is set. The Comparator of the received column
+     * gets set to order the Date in the right order.
      *
      */
     private void configureTable() {
@@ -319,7 +332,9 @@ public class MainWindowController implements Initializable {
         recipientsColumn.setCellValueFactory(new PropertyValueFactory<>("receiverTo"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
 
-        //TODO = SETTING THE STANDARD SORTING.
+        receivedColumn.setComparator((receivedString1, receivedString2) -> compareReceived(receivedString1, receivedString2));
+        emailView.getSortOrder().add(receivedColumn);
+
         emailView.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> showMailContent((Email) new_val));
     }
 
@@ -409,12 +424,29 @@ public class MainWindowController implements Initializable {
      *
      */
     private void searchEvent(final String input) {
-        final ObservableList filteredMails;
-        filteredMails = (ObservableList) emailManager.search(emailList, input);
-        emailView.setItems(filteredMails);
-        resultCount.setText("(" + filteredMails.size() + ")");
-        if (input.trim().equals("")) {
-            resultCount.setText("");
+        if (input != null) {
+            final ObservableList filteredMails;
+            filteredMails = (ObservableList) emailManager.search(emailList, input);
+            emailView.setItems(filteredMails);
+            resultCount.setText("(" + filteredMails.size() + ")");
+            if (input.trim().equals("")) {
+                resultCount.setText("");
+            }
         }
+    }
+
+    private int compareReceived(final String receivedString1, final String receivedString2) {
+        Date receivedDate1 = null;
+        Date receivedDate2 = null;
+        if (receivedString1 != null && receivedString2 != null) {
+            final DateFormat FORMAT = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.GERMANY);
+            try {
+                receivedDate1 = FORMAT.parse(receivedString1);
+                receivedDate2 = FORMAT.parse(receivedString2);
+            } catch (ParseException ex) {
+                Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return receivedDate1.compareTo(receivedDate2);
     }
 }
