@@ -18,10 +18,11 @@ public class Folder extends Component {
     public Folder(final File path, final boolean expandable) {
         super(path);
         this.expandable = expandable;
-        content = new ArrayList<Component>();
-        emails = new ArrayList<Email>();
+        content = new ArrayList<>();
+        emails = new ArrayList<>();
     }
 
+    @Override
     public boolean isExpandable() {
         return expandable;
     }
