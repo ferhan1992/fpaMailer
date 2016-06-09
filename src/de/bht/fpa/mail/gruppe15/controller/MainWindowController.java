@@ -53,7 +53,7 @@ public class MainWindowController implements Initializable {
     private static final Image FOLDER_ICON_CLOSED = new Image("/de/bht/fpa/mail/gruppe15/icons/folder.png");
     private static final Image FOLDER_ICON_OPEN = new Image("/de/bht/fpa/mail/gruppe15/icons/folder_open.png");
     /* Setting the standard root path to to dir of the main account. */
-    private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
+    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
     /* ArrayList to save the history. */
     private final ArrayList<File> historyList = new ArrayList<>();
     /* OberservableList to save the loaded emails. */
