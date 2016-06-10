@@ -14,12 +14,14 @@ public class Folder extends Component {
     private final boolean expandable;
     private final ArrayList<Component> content;
     private final ArrayList<Email> emails;
+    private boolean contentLoaded;
 
     public Folder(final File path, final boolean expandable) {
         super(path);
         this.expandable = expandable;
         content = new ArrayList<>();
         emails = new ArrayList<>();
+        contentLoaded = false;
     }
 
     @Override
@@ -44,11 +46,17 @@ public class Folder extends Component {
     public void addEmail(final Email message) {
         emails.add(message);
     }
+    
+    public void setContentLoaded(){
+        contentLoaded = true;
+    }
 
     @Override
     public String toString() {
-        if (!this.getEmails().isEmpty()) {
+        if (contentLoaded == true && !this.getEmails().isEmpty()) {
             return this.getName() + " (" + this.emails.size() + ")";
+        } else if (contentLoaded == true && this.getEmails().isEmpty()) {
+            return this.getName() + " (0)";
         }
         return this.getName();
     }

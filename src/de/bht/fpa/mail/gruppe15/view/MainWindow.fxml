@@ -37,7 +37,7 @@
                                  </columnResizePolicy>
                               </TableView>
                               <Text id="searchText" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="558.13671875" AnchorPane.topAnchor="20.0" />
-                              <TextField id="searchInput" fx:id="searchInput" layoutX="75.0" layoutY="16.0" prefHeight="25.0" prefWidth="427.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="16.0" />
+                              <TextField id="searchInput" fx:id="searchInput" layoutX="75.0" layoutY="16.0" prefHeight="25.0" prefWidth="427.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="16.0" />
                               <Label id="resultCount" fx:id="resultCount" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0" />
                            </children>
                         </AnchorPane>

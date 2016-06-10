@@ -30,6 +30,7 @@ public class EmailManager implements EmailManagerIF {
     @Override
     public void loadEmails(final Folder f) {
         if (f != null) {
+            f.setContentLoaded();
             if (f.getEmails().isEmpty()) {
                 final File file;
                 file = new File(f.getPath());

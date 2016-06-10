@@ -136,14 +136,14 @@ public class MainWindowController implements Initializable {
      *
      */
     public void configureTree() {
-            final TreeItem<Component> rootItem;
-            rootItem = new TreeItem<>(appLogic.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
-            rootItem.setExpanded(true);
-            rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
-            rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
-            showItems(appLogic.getTopFolder(), rootItem);
-            dirTree.setRoot(rootItem);
-            resetMailDetails();
+        final TreeItem<Component> rootItem;
+        rootItem = new TreeItem<>(appLogic.getTopFolder(), new ImageView(FOLDER_ICON_OPEN));
+        rootItem.setExpanded(true);
+        rootItem.addEventHandler(TreeItem.branchExpandedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
+        rootItem.addEventHandler(TreeItem.branchCollapsedEvent(), (TreeItem.TreeModificationEvent<Component> e) -> branchEvents(e));
+        showItems(appLogic.getTopFolder(), rootItem);
+        dirTree.setRoot(rootItem);
+        resetMailDetails();
     }
 
     /**
@@ -327,7 +327,7 @@ public class MainWindowController implements Initializable {
 
         receivedColumn.setComparator((receivedString1, receivedString2) -> compareReceived(receivedString1, receivedString2));
         emailView.getSortOrder().add(receivedColumn);
-        
+
         emailView.getSelectionModel().selectedItemProperty().addListener((obs, old_val, new_val) -> showMailContent((Email) new_val));
     }
 
@@ -359,13 +359,11 @@ public class MainWindowController implements Initializable {
             f = (Folder) target.getValue();
             appLogic.loadEmails(f);
             resetMailDetails();
-            if (f.getEmails().size() > 0) {
-                emailList.addAll(f.getEmails());
-                emailView.setItems(emailList);
-                showItems(f, target);
-                target.setValue(null);
-                target.setValue(f);
-            }
+            emailList.addAll(f.getEmails());
+            emailView.setItems(emailList);
+            showItems(f, target);
+            target.setValue(null);
+            target.setValue(f);
             System.out.println("===========================================================================================================================================");
             System.out.println("Selected directory: " + f.getPath());
             System.out.println("Number of E-Mails: " + f.getEmails().size());
@@ -451,13 +449,13 @@ public class MainWindowController implements Initializable {
         }
         return receivedDate1.compareTo(receivedDate2);
     }
-    
+
     /**
      * Method to get the current instance of the application Logic.
-     * 
+     *
      * @return ApplicationLogicIF
      */
-    public ApplicationLogicIF getAppLogic(){
+    public ApplicationLogicIF getAppLogic() {
         return this.appLogic;
     }
 }
