@@ -21,13 +21,13 @@ public class ApplicationLogic implements ApplicationLogicIF {
     /* Declaration of the needed managers for handling folders and emails */
     private EmailManagerIF emailManager;
     private FolderManagerIF folderManager;
+    /* Variable of type File holding the root path */
     private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
     /**
      * Constructor of the Class, initializing new instances of FolderManager and
      * EmailManager.
      *
-     * @param directory
      */
     public ApplicationLogic() {
         folderManager = new FolderManager(ROOT_PATH);
