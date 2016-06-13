@@ -21,6 +21,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     /* Declaration of the needed managers for handling folders and emails */
     private EmailManagerIF emailManager;
     private FolderManagerIF folderManager;
+    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
     /**
      * Constructor of the Class, initializing new instances of FolderManager and
@@ -28,8 +29,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
      *
      * @param directory
      */
-    public ApplicationLogic(final File directory) {
-        folderManager = new FolderManager(directory);
+    public ApplicationLogic() {
+        folderManager = new FolderManager(ROOT_PATH);
         emailManager = new EmailManager();
     }
 
