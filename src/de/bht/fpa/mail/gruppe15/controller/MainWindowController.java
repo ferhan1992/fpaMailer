@@ -357,7 +357,6 @@ public class MainWindowController implements Initializable {
             resetMailDetails();
             emailList.addAll(f.getEmails());
             emailView.setItems(emailList);
-            showItems(f, target);
             target.setValue(null);
             target.setValue(f);
             System.out.println("===========================================================================================================================================");

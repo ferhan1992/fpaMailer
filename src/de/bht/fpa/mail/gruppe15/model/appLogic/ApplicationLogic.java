@@ -94,8 +94,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
      */
     @Override
     public void changeDirectory(final File file) {
-        folderManager = new FolderManager(file);
-        emailManager = new EmailManager();
+        Folder f = new Folder(file, true);
+        folderManager.loadContent(f);
     }
 
     /**
