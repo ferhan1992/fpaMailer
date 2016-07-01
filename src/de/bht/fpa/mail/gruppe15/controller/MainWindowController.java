@@ -97,6 +97,10 @@ public class MainWindowController implements Initializable {
     private Label receiverLabel;
     @FXML
     private TextArea outputArea;
+    @FXML
+    private MenuItem menuItemNewAcc;
+    @FXML
+    private MenuItem menuItemOpenAcc;
 
     /**
      * Initializes the controller class. Starts configuring the TreeView with

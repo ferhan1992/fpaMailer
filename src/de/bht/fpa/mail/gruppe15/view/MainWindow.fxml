@@ -77,7 +77,11 @@
       </SplitPane>
       <MenuBar id="menuBar" fx:id="menuBar" prefHeight="15.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <menus>
-          <Menu id="menuAccount" fx:id="menuAccount" mnemonicParsing="false" text="Account" />
+          <Menu id="menuAccount" fx:id="menuAccount" mnemonicParsing="false" text="Account">
+               <items>
+                  <MenuItem id="menuItemOpenAcc" fx:id="menuItemOpenAcc" mnemonicParsing="false" text="Open Account" />
+                  <MenuItem id="menuItemNewAcc" fx:id="menuItemNewAcc" mnemonicParsing="false" text="New Account" />
+               </items></Menu>
           <Menu id="menuFile" fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>
               <MenuItem id="menuItemOpen" fx:id="menuItemOpen" mnemonicParsing="false" text="Open" />
