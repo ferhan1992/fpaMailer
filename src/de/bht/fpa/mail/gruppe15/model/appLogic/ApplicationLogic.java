@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
+import java.util.List;
 import javafx.collections.ObservableList;
 
 /**
@@ -21,6 +18,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     /* Declaration of the needed managers for handling folders and emails */
     private EmailManagerIF emailManager;
     private FolderManagerIF folderManager;
+    private AccountManager accountManager;
     /* Variable of type File holding the root path */
     private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
@@ -32,6 +30,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     public ApplicationLogic() {
         folderManager = new FolderManager(ROOT_PATH);
         emailManager = new EmailManager();
+        accountManager = new AccountManager();
     }
 
     /**
@@ -108,5 +107,30 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
         emailManager.saveEmails(emailList, selectedDir);
+    }
+
+    @Override
+    public void openAccount(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<String> getAllAccounts() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Account getAccount(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean saveAccount(Account account) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateAccount(Account account) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -1,5 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.FolderStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Component;
 import de.bht.fpa.mail.gruppe15.model.data.FileElement;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
@@ -81,5 +82,10 @@ public class FolderManager implements FolderManagerIF {
     @Override
     public Folder getTopFolder() {
         return topFolder;
+    }
+    
+    @Override
+    public void setFolderStrategy(final FolderStrategy strategy) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

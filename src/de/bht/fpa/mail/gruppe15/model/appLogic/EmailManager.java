@@ -1,5 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.EmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
@@ -20,7 +21,7 @@ import javax.xml.bind.Marshaller;
  * @author Ömür Düner
  */
 public class EmailManager implements EmailManagerIF {
-
+    
     /**
      * Loads all emails in the directory path of a folder into the given folder.
      * Checks if the email is in xml format.
@@ -115,5 +116,10 @@ public class EmailManager implements EmailManagerIF {
             return filteredMails;
         }
         return null;
+    }
+
+    @Override
+    public void setEmailStrategy(EmailStrategy strategy) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

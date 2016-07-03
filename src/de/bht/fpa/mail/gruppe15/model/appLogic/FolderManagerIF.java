@@ -1,5 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.FolderStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 
 /*
@@ -25,4 +26,6 @@ public interface FolderManagerIF {
      * should be loaded
      */
     void loadContent(final Folder f);
+    
+    void setFolderStrategy(final FolderStrategy strategy);
 }

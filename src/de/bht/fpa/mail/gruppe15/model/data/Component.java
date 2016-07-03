@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe15.model.data;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 /*
@@ -8,7 +9,7 @@ import java.util.List;
  * 
  * @author Simone Strippgen
  */
-public abstract class Component {
+public abstract class Component implements Serializable{
 
     // absolute directory path to this component
     private String path;
