@@ -121,7 +121,7 @@ public class EmailManager implements EmailManagerIF {
     }
 
     @Override
-    public void setEmailStrategy(EmailStrategy strategy) {
+    public void setEmailStrategy(final EmailStrategy strategy) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

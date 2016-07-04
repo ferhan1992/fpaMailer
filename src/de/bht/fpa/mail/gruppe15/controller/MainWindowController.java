@@ -55,7 +55,7 @@ public class MainWindowController implements Initializable {
     /* ArrayList to save the history. */
     private final ArrayList<File> historyList = new ArrayList<>();
     /* OberservableList to save the loaded emails. */
-    public static final ObservableList<Email> emailList = FXCollections.observableArrayList();
+    private final ObservableList<Email> emailList = FXCollections.observableArrayList();
     /* Declaration of the needed managers for handling folders and emails */
     private final ApplicationLogicIF appLogic = new ApplicationLogic();
 

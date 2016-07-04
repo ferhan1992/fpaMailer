@@ -25,7 +25,7 @@ public class AccountManager {
      * @return null If no account with this name exists.
      * @param name  name of the account 
      */
-    public Account getAccount(String name) {
+    public Account getAccount(final String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -39,9 +39,9 @@ public class AccountManager {
     /**
      * Saves the given Account in the data store, if an account
      * with the given name does not exist.
-     * @param account  the account that should be saved
+     * @param acc  the account that should be saved
      */
-    public void saveAccount(Account acc) {
+    public void saveAccount(final Account acc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -50,7 +50,7 @@ public class AccountManager {
      * @param account  the account that should be updated
      * @return true if update was successful.
      */
-    public boolean updateAccount(Account account) {
+    public boolean updateAccount(final Account account) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -5,7 +5,6 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.List;
-import javafx.collections.ObservableList;
 
 /**
  * This Interface defines the methods which are needed to manage emails and
@@ -72,7 +71,7 @@ public interface ApplicationLogicIF {
      * @param name  name of the account which should be set as
      *              the current working account.
      */
-    void openAccount(String name);
+    void openAccount(final String name);
 
     /**
      * @return a list of all account names.
@@ -84,19 +83,19 @@ public interface ApplicationLogicIF {
      * If no account with this name exists, it returns null.
      * @param name  name of the account 
      */
-    Account getAccount(String name);
+    Account getAccount(final String name);
     
     /**
      * Saves the given Account in the datastore.
      * @param account  the account that should be saved
      * @return true if an account with this name did not exist.
      */
-    boolean saveAccount(Account account);
+    boolean saveAccount(final Account account);
     
     /**
      * Updates the given Account in the datastore.
      * @param account  the account that should be updated
      */
-    void updateAccount(Account account);
+    void updateAccount(final Account account);
 
 }

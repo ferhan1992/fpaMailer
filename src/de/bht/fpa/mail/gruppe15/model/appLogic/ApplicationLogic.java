@@ -5,7 +5,6 @@ import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.List;
-import javafx.collections.ObservableList;
 
 /**
  * This class manages the methods which are needed to manage emails and folders.
@@ -98,7 +97,6 @@ public class ApplicationLogic implements ApplicationLogicIF {
     /**
      * Saves the email objects of the selected folder into the given directory.
      *
-     * @param emailList The list of Emails in current Folder.
      * @param selectedDir the directory in which the email objects should be
      * saved.
      */
@@ -108,7 +106,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     }
 
     @Override
-    public void openAccount(String name) {
+    public void openAccount(final String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -118,17 +116,17 @@ public class ApplicationLogic implements ApplicationLogicIF {
     }
 
     @Override
-    public Account getAccount(String name) {
+    public Account getAccount(final String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean saveAccount(Account account) {
+    public boolean saveAccount(final Account account) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public void updateAccount(final Account account) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
