@@ -245,6 +245,9 @@ public class MainWindowController implements Initializable {
         menuAccOpen.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
             mi.setOnAction((value) -> openAccount(mi.getText()));
         });
+        menuAccOpen.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
+            mi.setOnAction((value) -> openAccount(mi.getText()));
+        });
     }
 
     private void openAccount(String name) {

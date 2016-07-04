@@ -1,16 +1,14 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.controller.MainWindowController;
-import de.bht.fpa.mail.gruppe15.model.appLogic.xml.EmailStrategy;
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLEmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -25,6 +23,11 @@ import javax.xml.bind.Marshaller;
 public class EmailManager implements EmailManagerIF {
 
     private Folder selectedFolder;
+    private EmailStrategyIF emailStrategy;
+
+    public EmailManager() {
+        emailStrategy = new XMLEmailStrategy();
+    }
 
     /**
      * Loads all emails in the directory path of a folder into the given folder.
@@ -36,19 +39,7 @@ public class EmailManager implements EmailManagerIF {
     public void loadEmails(final Folder f) {
         if (f != null) {
             selectedFolder = f;
-            f.setContentLoaded();
-            if (f.getEmails().isEmpty()) {
-                final File file;
-                file = new File(f.getPath());
-                FileFilter filter;
-                filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
-                for (final File fi : file.listFiles(filter)) {
-                    final Email email = JAXB.unmarshal(fi, Email.class);
-                    if (checkEmailFormat(email)) {
-                        f.addEmail(email);
-                    }
-                }
-            }
+            emailStrategy.loadEmails(f);
         }
     }
 
@@ -73,27 +64,9 @@ public class EmailManager implements EmailManagerIF {
                     jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/mail" + i + ".xml"));
                 }
             } catch (JAXBException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        }
-    }
-
-    /**
-     * Method to check the passed XML file if it contains all the needed
-     * variables to be accepted as a mail.
-     *
-     * @param email The XML File which gets checked.
-     * @return boolean
-     */
-    private boolean checkEmailFormat(final Email email) {
-        if (email != null) {
-            return !(email.getSender() == null
-                    || email.getImportance() == null
-                    || email.getSubject() == null
-                    || email.getText() == null
-                    || email.getReceiver() == null);
-        }
-        return false;
     }
 
     /**
@@ -113,7 +86,7 @@ public class EmailManager implements EmailManagerIF {
                     || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
-                    filteredMails.add(email);
+                filteredMails.add(email);
             });
             return filteredMails;
         }
@@ -121,7 +94,7 @@ public class EmailManager implements EmailManagerIF {
     }
 
     @Override
-    public void setEmailStrategy(final EmailStrategy strategy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setEmailStrategy(final EmailStrategyIF strategy) {
+        this.emailStrategy = strategy;
     }
 }

@@ -1,11 +1,9 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
-import de.bht.fpa.mail.gruppe15.model.appLogic.xml.EmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.util.List;
-import javafx.collections.ObservableList;
 
 /**
  * This is the interface for classes that manage emails.
@@ -39,6 +37,6 @@ public interface EmailManagerIF {
      */
     List<Email> search(final String input);
     
-    void setEmailStrategy(final EmailStrategy strategy);
+    void setEmailStrategy(final EmailStrategyIF strategy);
 
 }

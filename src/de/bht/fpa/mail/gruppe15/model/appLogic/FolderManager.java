@@ -1,8 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.xml.FolderStrategy;
-import de.bht.fpa.mail.gruppe15.model.data.Component;
-import de.bht.fpa.mail.gruppe15.model.data.FileElement;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 
@@ -16,6 +14,7 @@ public class FolderManager implements FolderManagerIF {
 
     //top Folder of the managed hierarchy
     private final Folder topFolder;
+    private FolderStrategyIF folderStrategy;
 
     /**
      * Constructs a new FileManager object which manages a folder hierarchy,
@@ -26,6 +25,7 @@ public class FolderManager implements FolderManagerIF {
      */
     public FolderManager(final File file) {
         topFolder = new Folder(file, true);
+        folderStrategy = new FolderStrategy();
     }
 
     /**
@@ -38,40 +38,8 @@ public class FolderManager implements FolderManagerIF {
     @Override
     public void loadContent(final Folder f) {
         if (f != null) {
-            if (f.getComponents().isEmpty()) {
-                final File file;
-                file = new File(f.getPath());
-                for (final File fi : file.listFiles()) {
-                    if (fi.isDirectory()) {
-                        final Component y;
-                        y = new Folder(fi.getAbsoluteFile(), hasSubDir(fi));
-                        f.addComponent(y);
-                    } else if (fi.isFile()) {
-                        final Component y;
-                        y = new FileElement(fi.getAbsoluteFile());
-                        f.addComponent(y);
-                    }
-                }
-            }
+            folderStrategy.loadContent(f);
         }
-    }
-
-    /**
-     * Method to check, whether the file contains subfolder or not. Returns true
-     * if when containing subfolders and false if not.
-     *
-     * @param fi the file which shall be checked for subdirectorys.
-     * @return boolean
-     */
-    private boolean hasSubDir(File fi) {
-        if (fi != null) {
-            for (File x : fi.listFiles()) {
-                if (x.isDirectory()) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
@@ -86,6 +54,6 @@ public class FolderManager implements FolderManagerIF {
     
     @Override
     public void setFolderStrategy(final FolderStrategy strategy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.folderStrategy = strategy;
     }
 }
