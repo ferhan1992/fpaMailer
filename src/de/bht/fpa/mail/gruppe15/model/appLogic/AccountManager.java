@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Simone Strippgen
  */
-public class AccountManager {
+public class AccountManager implements AccountManagerIF{
 
     private AccountDAOIF accountDB;
     private List<Account> accountList;
@@ -25,6 +25,7 @@ public class AccountManager {
      * @return null If no account with this name exists.
      * @param name  name of the account 
      */
+    @Override
     public Account getAccount(final String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -32,6 +33,7 @@ public class AccountManager {
     /**
      * @return a list of all account names.
      */
+    @Override
     public List<Account> getAllAccounts() {   
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -41,6 +43,7 @@ public class AccountManager {
      * with the given name does not exist.
      * @param acc  the account that should be saved
      */
+    @Override
     public void saveAccount(final Account acc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -50,6 +53,7 @@ public class AccountManager {
      * @param account  the account that should be updated
      * @return true if update was successful.
      */
+    @Override
     public boolean updateAccount(final Account account) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -233,6 +233,9 @@ public class MainWindowController implements Initializable {
         if (e.getSource() == menuItemSave) {
             mailSaver();
         }
+        if (e.getSource() == menuItemNewAcc){
+            showNewAccount();
+        }
     }
 
     /**
@@ -457,4 +460,21 @@ public class MainWindowController implements Initializable {
     public ApplicationLogicIF getAppLogic() {
         return this.appLogic;
     }
+
+    private void showNewAccount() {
+        final Stage newAccountStage;
+        newAccountStage = new Stage(StageStyle.UTILITY);
+        newAccountStage.setTitle("New Account");
+        final FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/NewAccountWindow.fxml"));
+        try {
+            Pane newAccPane = (Pane) loader.load();
+            final Scene scene;
+            scene = new Scene(newAccPane);
+            newAccountStage.setResizable(false);
+            newAccountStage.setScene(scene);
+            newAccountStage.show();
+        } catch (final Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }    }
 }

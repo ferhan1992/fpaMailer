@@ -17,7 +17,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     /* Declaration of the needed managers for handling folders and emails */
     private final EmailManagerIF emailManager;
     private FolderManagerIF folderManager;
-    private final AccountManager accountManager;
+    private final AccountManagerIF accountManager;
     /* Variable of type File holding the root path */
     private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
