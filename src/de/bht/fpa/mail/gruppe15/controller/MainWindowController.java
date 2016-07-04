@@ -55,7 +55,7 @@ public class MainWindowController implements Initializable {
     /* ArrayList to save the history. */
     private final ArrayList<File> historyList = new ArrayList<>();
     /* OberservableList to save the loaded emails. */
-    private final ObservableList<Email> emailList = FXCollections.observableArrayList();
+    public static final ObservableList<Email> emailList = FXCollections.observableArrayList();
     /* Declaration of the needed managers for handling folders and emails */
     private final ApplicationLogicIF appLogic = new ApplicationLogic();
 
@@ -296,7 +296,7 @@ public class MainWindowController implements Initializable {
         final File selectedDir;
         selectedDir = dc.showDialog(saverStage);
         if (selectedDir != null) {
-            appLogic.saveEmails(emailList, selectedDir);
+            appLogic.saveEmails(selectedDir);
         }
     }
 
@@ -416,7 +416,7 @@ public class MainWindowController implements Initializable {
     private void searchEvent(final String input) {
         if (input != null) {
             final ObservableList filteredMails;
-            filteredMails = (ObservableList) appLogic.search(emailList, input);
+            filteredMails = FXCollections.observableArrayList(appLogic.search(input));
             emailView.setItems(filteredMails);
             resultCount.setText("(" + filteredMails.size() + ")");
             if (input.trim().equals("")) {

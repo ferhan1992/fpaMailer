@@ -4,6 +4,7 @@ import de.bht.fpa.mail.gruppe15.model.appLogic.xml.EmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
+import java.util.List;
 import javafx.collections.ObservableList;
 
 /**
@@ -24,21 +25,19 @@ public interface EmailManagerIF {
     /**
      * Saves the email objects of the selected folder into the given directory.
      *
-     * @param emailList The list of Emails in current Folder.
      * @param selectedDir the directory in which the email objects should be
      * saved.
      */
-    void saveEmails(final ObservableList<Email> emailList, final File selectedDir);
+    void saveEmails(final File selectedDir);
 
     /**
      * Searches for all emails in the selected folder that contain the given
      * pattern.
      *
-     * @param emailList List of loaded Emails
      * @param input Input in search field.
      * @return a list of all emails that contain the pattern
      */
-    ObservableList<Email> search(final ObservableList<Email> emailList, final String input);
+    List<Email> search(final String input);
     
     void setEmailStrategy(final EmailStrategy strategy);
 

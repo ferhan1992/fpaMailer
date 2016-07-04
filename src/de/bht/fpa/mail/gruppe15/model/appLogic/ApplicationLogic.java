@@ -16,9 +16,9 @@ import javafx.collections.ObservableList;
 public class ApplicationLogic implements ApplicationLogicIF {
 
     /* Declaration of the needed managers for handling folders and emails */
-    private EmailManagerIF emailManager;
+    private final EmailManagerIF emailManager;
     private FolderManagerIF folderManager;
-    private AccountManager accountManager;
+    private final AccountManager accountManager;
     /* Variable of type File holding the root path */
     private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
@@ -61,15 +61,12 @@ public class ApplicationLogic implements ApplicationLogicIF {
      * Searches for all emails in the selected folder that contain the given
      * pattern.
      *
-     * @param emailList List of loaded Emails
      * @param input Input in search field.
      * @return a list of all emails that contain the pattern
      */
     @Override
-    public ObservableList<Email> search(ObservableList<Email> emailList, String input) {
-        final ObservableList<Email> filteredList;
-        filteredList = emailManager.search(emailList, input);
-        return filteredList;
+    public List<Email> search(String input) {
+        return emailManager.search(input);
     }
 
     /**
@@ -93,8 +90,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
      */
     @Override
     public void changeDirectory(final File file) {
-        Folder f = new Folder(file, true);
-        folderManager.loadContent(f);
+        if (file != null){
+            folderManager = new FolderManager(file);
+        }
     }
 
     /**
@@ -105,8 +103,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
      * saved.
      */
     @Override
-    public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
-        emailManager.saveEmails(emailList, selectedDir);
+    public void saveEmails(final File selectedDir) {
+        emailManager.saveEmails(selectedDir);
     }
 
     @Override

@@ -35,11 +35,10 @@ public interface ApplicationLogicIF {
      * Searches for all emails in the selected folder that contain the given
      * pattern.
      *
-     * @param emailList List of loaded Emails
      * @param input Input in search field.
      * @return a list of all emails that contain the pattern
      */
-    public ObservableList<Email> search(final ObservableList<Email> emailList, final String input);
+    public List<Email> search(final String input);
 
     /**
      * Loads all emails in the directory path of the given folder as objects of
@@ -62,11 +61,10 @@ public interface ApplicationLogicIF {
     /**
      * Saves the email objects of the selected folder into the given directory.
      *
-     * @param emailList The list of Emails in current Folder.
      * @param selectedDir the directory in which the email objects should be
      * saved.
      */
-    void saveEmails(final ObservableList<Email> emailList, final File selectedDir);
+    void saveEmails(final File selectedDir);
      
     /**
      * Sets a selected account as the new working account, and initializes

@@ -1,16 +1,18 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.controller.MainWindowController;
 import de.bht.fpa.mail.gruppe15.model.appLogic.xml.EmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 /**
@@ -21,7 +23,9 @@ import javax.xml.bind.Marshaller;
  * @author Ömür Düner
  */
 public class EmailManager implements EmailManagerIF {
-    
+
+    private Folder selectedFolder;
+
     /**
      * Loads all emails in the directory path of a folder into the given folder.
      * Checks if the email is in xml format.
@@ -31,6 +35,7 @@ public class EmailManager implements EmailManagerIF {
     @Override
     public void loadEmails(final Folder f) {
         if (f != null) {
+            selectedFolder = f;
             f.setContentLoaded();
             if (f.getEmails().isEmpty()) {
                 final File file;
@@ -50,13 +55,12 @@ public class EmailManager implements EmailManagerIF {
     /**
      * Saves the email objects of the selected folder into the given directory.
      *
-     * @param emailList The list of Emails in current Folder.
      * @param selectedDir the directory in which the email objects should be
      * saved.
      */
     @Override
-    public void saveEmails(final ObservableList<Email> emailList, final File selectedDir) {
-        if (emailList != null && selectedDir != null) {
+    public void saveEmails(final File selectedDir) {
+        if (selectedDir != null) {
             try {
                 JAXBContext jaxbContext;
                 jaxbContext = JAXBContext.newInstance(Email.class);
@@ -64,13 +68,13 @@ public class EmailManager implements EmailManagerIF {
                 jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 int i = 0;
-                for (Email email : emailList) {
+                for (Email email : selectedFolder.getEmails()) {
                     i++;
                     jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/mail" + i + ".xml"));
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(EmailManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (JAXBException ex) {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }
 
@@ -96,22 +100,20 @@ public class EmailManager implements EmailManagerIF {
      * Searches for all emails in the selected folder that contain the given
      * pattern.
      *
-     * @param emailList List of loaded Emails
      * @param input Input in search field.
      * @return a list of all emails that contain the pattern
      */
     @Override
-    public ObservableList<Email> search(final ObservableList<Email> emailList, final String input) {
-        if (emailList != null && input != null) {
-            final ObservableList filteredMails;
-            filteredMails = FXCollections.observableArrayList();
-            emailList.stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
+    public List<Email> search(final String input) {
+        if (input != null) {
+            final ArrayList<Email> filteredMails = new ArrayList<>();
+            selectedFolder.getEmails().stream().filter((Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getText().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getSent().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getReceiver().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getSender().toLowerCase().contains(input.trim().toLowerCase())).forEach((email) -> {
-                filteredMails.add(email);
+                    filteredMails.add(email);
             });
             return filteredMails;
         }
