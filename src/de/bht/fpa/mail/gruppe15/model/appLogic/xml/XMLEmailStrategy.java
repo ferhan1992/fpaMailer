@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.bht.fpa.mail.gruppe15.model.appLogic.xml;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.EmailStrategyIF;
@@ -14,7 +9,8 @@ import javax.xml.bind.JAXB;
 
 /**
  *
- * @author Admin
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
  */
 public class XMLEmailStrategy implements EmailStrategyIF {
 

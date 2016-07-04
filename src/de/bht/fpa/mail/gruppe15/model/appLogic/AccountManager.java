@@ -58,7 +58,7 @@ public class AccountManager implements AccountManagerIF {
         if (acc != null && checkAccountExistence(acc)) {
             accountDB.saveAccount(acc);
             this.accountList.add(acc);
-        } else if(!checkAccountExistence(acc)) {
+        } else if (!checkAccountExistence(acc)) {
             System.out.println("Account already exists.");
         }
     }
@@ -80,10 +80,6 @@ public class AccountManager implements AccountManagerIF {
      */
     @Override
     public boolean updateAccount(final Account account) {
-        if (accountList.contains(account)) {
-            accountDB.updateAccount(account);
-            return true;
-        }
-        return false;
+        return accountDB.updateAccount(account);
     }
 }

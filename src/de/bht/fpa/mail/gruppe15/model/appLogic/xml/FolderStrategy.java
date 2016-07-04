@@ -8,7 +8,8 @@ import java.io.File;
 
 /**
  *
- * @author Admin
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
  */
 public class FolderStrategy implements FolderStrategyIF {
 

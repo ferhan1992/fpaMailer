@@ -2,6 +2,7 @@ package de.bht.fpa.mail.gruppe15.controller;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.ApplicationLogic;
 import de.bht.fpa.mail.gruppe15.model.appLogic.ApplicationLogicIF;
+import de.bht.fpa.mail.gruppe15.model.data.Account;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -240,13 +241,13 @@ public class MainWindowController implements Initializable {
             mailSaver();
         }
         if (e.getSource() == menuItemAccNew) {
-            showNewAccount();
+            showAccount("create");
         }
         menuAccOpen.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
             mi.setOnAction((value) -> openAccount(mi.getText()));
         });
-        menuAccOpen.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
-            mi.setOnAction((value) -> openAccount(mi.getText()));
+        menuAccEdit.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
+            mi.setOnAction((value) -> showAccount(mi.getText()));
         });
     }
 
@@ -480,22 +481,30 @@ public class MainWindowController implements Initializable {
         return this.appLogic;
     }
 
-    private void showNewAccount() {
-        final Stage newAccountStage;
-        newAccountStage = new Stage(StageStyle.UTILITY);
-        newAccountStage.setTitle("New Account");
-        final FXMLLoader loader;
-        loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/NewAccountWindow.fxml"));
-        loader.setController(new NewAccountWindowController(this));
-        try {
-            Pane newAccPane = (Pane) loader.load();
-            final Scene scene;
-            scene = new Scene(newAccPane);
-            newAccountStage.setResizable(false);
-            newAccountStage.setScene(scene);
-            newAccountStage.show();
-        } catch (final Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
+    private void showAccount(String string) {
+        if (string != null) {
+            final Stage AccountStage;
+            AccountStage = new Stage(StageStyle.UTILITY);
+            Account account = null;
+            if (string.equals("create")) {
+                AccountStage.setTitle("New Account");
+            } else {
+                AccountStage.setTitle("Update Account");
+                account = appLogic.getAccount(string);
+            }
+            final FXMLLoader loader;
+            loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/AccountWindow.fxml"));
+            loader.setController(new AccountWindowController(account, this));
+            try {
+                Pane AccPane = (Pane) loader.load();
+                final Scene scene;
+                scene = new Scene(AccPane);
+                AccountStage.setResizable(false);
+                AccountStage.setScene(scene);
+                AccountStage.show();
+            } catch (final Exception ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
         }
     }
 }
