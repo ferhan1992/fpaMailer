@@ -79,8 +79,9 @@
         <menus>
           <Menu id="menuAccount" fx:id="menuAccount" mnemonicParsing="false" text="Account">
                <items>
-                  <MenuItem id="menuItemOpenAcc" fx:id="menuItemOpenAcc" mnemonicParsing="false" text="Open Account" />
-                  <MenuItem id="menuItemNewAcc" fx:id="menuItemNewAcc" mnemonicParsing="false" text="New Account" />
+                  <MenuItem id="menuItemAccNew" fx:id="menuItemAccNew" mnemonicParsing="false" text="New Account" />
+                  <Menu id="menuAccOpen" fx:id="menuAccOpen" mnemonicParsing="false" text="Open Account" />
+                  <Menu id="menuAccEdit" fx:id="menuAccEdit" mnemonicParsing="false" text="Edit Account" />
                </items></Menu>
           <Menu id="menuFile" fx:id="menuFile" mnemonicParsing="false" text="File">
             <items>

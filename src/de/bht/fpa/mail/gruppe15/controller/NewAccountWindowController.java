@@ -5,6 +5,7 @@
  */
 package de.bht.fpa.mail.gruppe15.controller;
 
+import de.bht.fpa.mail.gruppe15.model.data.Account;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -36,6 +37,12 @@ public class NewAccountWindowController implements Initializable {
     private TextField usernameInput;
     @FXML
     private TextField passwordInput;
+    
+    private final MainWindowController mainWindowController;
+
+    NewAccountWindowController(final MainWindowController aThis) {
+        mainWindowController = aThis;
+    }
 
     /**
      * Initializes the controller class.
@@ -62,7 +69,9 @@ public class NewAccountWindowController implements Initializable {
         if (nameInput.getText().trim().isEmpty() || hostInput.getText().trim().isEmpty() || usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty()){
             errorLabel.setText("All textfields must contain data!");
         } else{
-            errorLabel.setText("");
+            Account account = new Account(nameInput.getText(), hostInput.getText(), usernameInput.getText(), passwordInput.getText());
+            mainWindowController.getAppLogic().saveAccount(account);
+            close(buttonSave);
         }
     }
     

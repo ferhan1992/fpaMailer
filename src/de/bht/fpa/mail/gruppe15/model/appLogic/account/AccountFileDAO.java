@@ -29,25 +29,25 @@ public class AccountFileDAO implements AccountDAOIF {
 
     @Override
     public List<Account> getAllAccounts() {
-        List<Account> list = new ArrayList<Account>();
+        List<Account> list = new ArrayList<>();
         Account acc = null;
         try {
             FileInputStream fileInput = new FileInputStream(ACCOUNT_FILE);
-            ObjectInputStream is = new ObjectInputStream(fileInput);
-            acc = (Account) is.readObject();
-            while (acc != null) {
-                list.add(acc);
+            try (ObjectInputStream is = new ObjectInputStream(fileInput)) {
                 acc = (Account) is.readObject();
+                while (acc != null) {
+                    list.add(acc);
+                    acc = (Account) is.readObject();
+                }
             }
-            is.close();
-        } catch (Exception ex) {
+        } catch (IOException | ClassNotFoundException ex) {
 //            do nothing
         }
         return list;
     }
 
     @Override
-    public Account saveAccount(Account acc) {
+    public Account saveAccount(final Account acc) {
         if (acc != null) {
             List<Account> accounts = getAllAccounts();
             accounts.add(acc);
@@ -57,7 +57,7 @@ public class AccountFileDAO implements AccountDAOIF {
     }
 
     @Override
-    public boolean updateAccount(Account acc) {
+    public boolean updateAccount(final Account acc) {
         if (acc != null) {
             List<Account> accounts = getAllAccounts();
             remove(acc.getName(), accounts);
@@ -67,23 +67,23 @@ public class AccountFileDAO implements AccountDAOIF {
         return true;
     }
 
-    private void saveAccounts(List<Account> accList) {
+    private void saveAccounts(final List<Account> accList) {
         try {
             File accountFile = ACCOUNT_FILE;
             System.out.println(accountFile);
             boolean deleted = accountFile.delete();
             FileOutputStream fileOutput = new FileOutputStream(accountFile);
-            ObjectOutputStream os = new ObjectOutputStream(fileOutput);
-            for (Account a : accList) {
-                os.writeObject(a);
+            try (ObjectOutputStream os = new ObjectOutputStream(fileOutput)) {
+                for (Account a : accList) {
+                    os.writeObject(a);
+                }
             }
-            os.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void remove(String name, List<Account> list) {
+    private void remove(final String name, final List<Account> list) {
         Iterator<Account> it = list.iterator();
         while (it.hasNext()) {
             Account acc = it.next();

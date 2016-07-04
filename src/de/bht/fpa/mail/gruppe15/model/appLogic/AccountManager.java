@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.account.AccountDAOIF;
+import de.bht.fpa.mail.gruppe15.model.appLogic.account.AccountFileDAO;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import java.util.List;
 
@@ -10,51 +11,79 @@ import java.util.List;
  * 
  * @author Simone Strippgen
  */
-public class AccountManager implements AccountManagerIF{
+public class AccountManager implements AccountManagerIF {
 
-    private AccountDAOIF accountDB;
-    private List<Account> accountList;
-
+    private final AccountDAOIF accountDB;
+    private final List<Account> accountList;
 
     public AccountManager() {
-	// hier kommt Ihr Code hinein
+        accountDB = new AccountFileDAO();
+        accountList = accountDB.getAllAccounts();
     }
 
     /**
      * Returns the account with the given name.
+     *
      * @return null If no account with this name exists.
-     * @param name  name of the account 
+     * @param name name of the account
      */
     @Override
     public Account getAccount(final String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (name != null) {
+            for (Account acc : accountList) {
+                if (acc.getName().equals(name)) {
+                    return acc;
+                }
+            }
+        }
+        return null;
     }
 
     /**
      * @return a list of all account names.
      */
     @Override
-    public List<Account> getAllAccounts() {   
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Account> getAllAccounts() {
+        return accountList;
     }
 
     /**
-     * Saves the given Account in the data store, if an account
-     * with the given name does not exist.
-     * @param acc  the account that should be saved
+     * Saves the given Account in the data store, if an account with the given
+     * name does not exist.
+     *
+     * @param acc the account that should be saved
      */
     @Override
     public void saveAccount(final Account acc) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (acc != null && checkAccountExistence(acc)) {
+            accountDB.saveAccount(acc);
+            this.accountList.add(acc);
+        } else if(!checkAccountExistence(acc)) {
+            System.out.println("Account already exists.");
+        }
+    }
+
+    private boolean checkAccountExistence(final Account acc) {
+        for (Account account : accountList) {
+            if (account.getName().equals(acc.getName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
      * Updates the given Account in the data store.
-     * @param account  the account that should be updated
+     *
+     * @param account the account that should be updated
      * @return true if update was successful.
      */
     @Override
     public boolean updateAccount(final Account account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (accountList.contains(account)) {
+            accountDB.updateAccount(account);
+            return true;
+        }
+        return false;
     }
 }

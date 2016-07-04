@@ -98,9 +98,11 @@ public class MainWindowController implements Initializable {
     @FXML
     private TextArea outputArea;
     @FXML
-    private MenuItem menuItemNewAcc;
+    private MenuItem menuItemAccNew;
     @FXML
-    private MenuItem menuItemOpenAcc;
+    private Menu menuAccOpen;
+    @FXML
+    private Menu menuAccEdit;
 
     /**
      * Initializes the controller class. Starts configuring the TreeView with
@@ -213,6 +215,10 @@ public class MainWindowController implements Initializable {
                 mi.setOnAction((e) -> menuEvents(e));
             });
         });
+        appLogic.getAllAccounts().stream().filter((account) -> (account != null)).forEach((final String account) -> {
+            menuAccOpen.getItems().add(new MenuItem(account));
+            menuAccEdit.getItems().add(new MenuItem(account));
+        });
     }
 
     /**
@@ -233,8 +239,18 @@ public class MainWindowController implements Initializable {
         if (e.getSource() == menuItemSave) {
             mailSaver();
         }
-        if (e.getSource() == menuItemNewAcc){
+        if (e.getSource() == menuItemAccNew) {
             showNewAccount();
+        }
+        menuAccOpen.getItems().stream().filter((mi) -> (mi != null)).forEach((final MenuItem mi) -> {
+            mi.setOnAction((value) -> openAccount(mi.getText()));
+        });
+    }
+
+    private void openAccount(String name) {
+        if (name != null) {
+            appLogic.openAccount(name);
+            configureTree();
         }
     }
 
@@ -467,6 +483,7 @@ public class MainWindowController implements Initializable {
         newAccountStage.setTitle("New Account");
         final FXMLLoader loader;
         loader = new FXMLLoader(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/NewAccountWindow.fxml"));
+        loader.setController(new NewAccountWindowController(this));
         try {
             Pane newAccPane = (Pane) loader.load();
             final Scene scene;
@@ -476,5 +493,6 @@ public class MainWindowController implements Initializable {
             newAccountStage.show();
         } catch (final Exception ex) {
             System.out.println(ex.getLocalizedMessage());
-        }    }
+        }
+    }
 }

@@ -4,6 +4,7 @@ import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
      */
     @Override
     public void changeDirectory(final File file) {
-        if (file != null){
+        if (file != null) {
             folderManager = new FolderManager(file);
         }
     }
@@ -107,26 +108,41 @@ public class ApplicationLogic implements ApplicationLogicIF {
 
     @Override
     public void openAccount(final String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (name != null) {
+            final Account account;
+            account = getAccount(name);
+            final File file;
+            file = new File(account.getTop().getPath());
+            changeDirectory(file);
+        }
     }
 
     @Override
     public List<String> getAllAccounts() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final List<String> allAccounts;
+        allAccounts = new ArrayList<>();
+        accountManager.getAllAccounts().stream().forEach((x) -> {
+            allAccounts.add(x.getName());
+        });
+        return allAccounts;
     }
 
     @Override
     public Account getAccount(final String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return accountManager.getAccount(name);
     }
 
     @Override
     public boolean saveAccount(final Account account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (account != null) {
+            accountManager.saveAccount(account);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void updateAccount(final Account account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        accountManager.updateAccount(account);
     }
 }

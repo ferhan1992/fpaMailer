@@ -21,7 +21,7 @@ class TestAccountProvider {
      * refer to the folder with the testdata.
      */
     public static List<Account> createAccounts() {
-        List<Account> accounts = new ArrayList<Account>();
+        List<Account> accounts = new ArrayList<>();
         Account acc = new Account("Walter", "smtp.gmail.com", "walter@gmail.com", "walter");
         //Sets the path to the corresponding email folder
         Folder folder = new Folder(new File(TESTDATA_HOME, "Walter"), true);
