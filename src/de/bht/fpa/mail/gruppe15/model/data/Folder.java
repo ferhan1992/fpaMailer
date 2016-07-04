@@ -4,16 +4,21 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Simone Strippgen
  *
  */
-public class Folder extends Component implements Serializable{
+@Entity
+public class Folder extends Component implements Serializable {
 
     private final boolean expandable;
+    @Transient
     private transient final ArrayList<Component> content;
+    @Transient
     private transient final ArrayList<Email> emails;
     private boolean contentLoaded;
 
@@ -47,8 +52,8 @@ public class Folder extends Component implements Serializable{
     public void addEmail(final Email message) {
         emails.add(message);
     }
-    
-    public void setContentLoaded(){
+
+    public void setContentLoaded() {
         contentLoaded = true;
     }
 

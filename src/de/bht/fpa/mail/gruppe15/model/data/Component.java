@@ -3,20 +3,33 @@ package de.bht.fpa.mail.gruppe15.model.data;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
 
 /*
  * This is the component part of a composite pattern.
  * 
  * @author Simone Strippgen
  */
-public abstract class Component implements Serializable{
+@Entity
+@Inheritance
+public abstract class Component implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     // absolute directory path to this component
     private String path;
     // name of the component (without path)
     private String name;
 
-    public  Component(final File path) {
+    public Component() {
+    }
+
+    public Component(final File path) {
         this.path = path.getAbsolutePath();
         this.name = path.getName();
     }

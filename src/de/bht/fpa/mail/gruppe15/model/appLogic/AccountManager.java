@@ -1,6 +1,7 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.account.AccountDAOIF;
+import de.bht.fpa.mail.gruppe15.model.appLogic.account.AccountDBDAO;
 import de.bht.fpa.mail.gruppe15.model.appLogic.account.AccountFileDAO;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import java.util.List;
@@ -17,7 +18,8 @@ public class AccountManager implements AccountManagerIF {
     private final List<Account> accountList;
 
     public AccountManager() {
-        accountDB = new AccountFileDAO();
+        //accountDB = new AccountFileDAO();
+        accountDB = new AccountDBDAO();
         accountList = accountDB.getAllAccounts();
     }
 

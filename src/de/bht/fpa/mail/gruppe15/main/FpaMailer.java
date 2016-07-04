@@ -18,7 +18,6 @@ public class FpaMailer extends Application {
     public void start(final Stage stage) throws Exception {
         final Parent root;
         root = FXMLLoader.load(getClass().getResource("/de/bht/fpa/mail/gruppe15/view/MainWindow.fxml"));
-
         final Scene scene;
         scene = new Scene(root);
         stage.setTitle("FPA Mail application group15");
