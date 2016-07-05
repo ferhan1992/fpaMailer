@@ -75,18 +75,23 @@ public class AccountWindowController implements Initializable {
                 mainWindowController.getAppLogic().saveAccount(acc);
             }
             if (e.getSource().toString().endsWith("'Update'")) {
-                mainWindowController.getAppLogic().updateAccount(acc);
+                this.account.setPassword(passwordInput.getText());
+                this.account.setUsername(usernameInput.getText());
+                this.account.setHost(hostInput.getText());
+                mainWindowController.getAppLogic().updateAccount(account);
             }
+            mainWindowController.refreshAccountMenu();
             close(buttonExecute);
         }
     }
-        /**
-         * Method which interacts with the passed button, gets the Window of the
-         * button and closes it.
-         *
-         * @param button the pressed Button which shall close the window.
-         *
-         */
+
+    /**
+     * Method which interacts with the passed button, gets the Window of the
+     * button and closes it.
+     *
+     * @param button the pressed Button which shall close the window.
+     *
+     */
     private void close(final Button button) {
         if (button != null) {
             final Stage newAccountStage;

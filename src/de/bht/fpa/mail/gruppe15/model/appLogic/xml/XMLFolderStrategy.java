@@ -11,7 +11,7 @@ import java.io.File;
  * @author Ferhan Kaplanseren
  * @author Ömür Düner
  */
-public class FolderStrategy implements FolderStrategyIF {
+public class XMLFolderStrategy implements FolderStrategyIF {
 
     /**
      * Loads all relevant content in the directory path of a folder object into

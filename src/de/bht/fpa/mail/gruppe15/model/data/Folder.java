@@ -14,13 +14,20 @@ import javax.persistence.Transient;
  */
 @Entity
 public class Folder extends Component implements Serializable {
-
+    
     private final boolean expandable;
     @Transient
     private transient final ArrayList<Component> content;
     @Transient
     private transient final ArrayList<Email> emails;
     private boolean contentLoaded;
+
+    public Folder() {
+        this.expandable = false;
+        content = new ArrayList<>();
+        emails = new ArrayList<>();
+        contentLoaded = false;
+    }
 
     public Folder(final File path, final boolean expandable) {
         super(path);

@@ -1,5 +1,7 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
+import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapEmailStrategy;
+import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapFolderStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
@@ -20,7 +22,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     private FolderManagerIF folderManager;
     private final AccountManagerIF accountManager;
     /* Variable of type File holding the root path */
-    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
+    private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
 
     /**
      * Constructor of the Class, initializing new instances of FolderManager and
@@ -111,9 +113,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
         if (name != null) {
             final Account account;
             account = getAccount(name);
-            final File file;
-            file = new File(account.getTop().getPath());
-            changeDirectory(file);
+            folderManager.setFolderStrategy(new IMapFolderStrategy(account));
+            emailManager.setEmailStrategy(new IMapEmailStrategy(account));
         }
     }
 

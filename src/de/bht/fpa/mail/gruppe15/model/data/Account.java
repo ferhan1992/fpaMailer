@@ -22,7 +22,7 @@ public class Account implements Serializable {
     private long id;
 
     private static final long serialVersionUID = -7660640539811469762L;
-
+    
     private String name;
 
     private String host;

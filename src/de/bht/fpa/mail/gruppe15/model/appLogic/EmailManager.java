@@ -2,6 +2,8 @@ package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.controller.MainWindowController;
 import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLEmailStrategy;
+import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapEmailStrategy;
+import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
@@ -96,5 +98,6 @@ public class EmailManager implements EmailManagerIF {
     @Override
     public void setEmailStrategy(final EmailStrategyIF strategy) {
         this.emailStrategy = strategy;
+        loadEmails(selectedFolder);
     }
 }
