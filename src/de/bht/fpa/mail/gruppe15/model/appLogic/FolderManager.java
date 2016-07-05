@@ -1,8 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
-import de.bht.fpa.mail.gruppe15.model.appLogic.FolderStrategyIF;
 import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLFolderStrategy;
-import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapFolderStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 
@@ -53,7 +51,7 @@ public class FolderManager implements FolderManagerIF {
     public Folder getTopFolder() {
         return topFolder;
     }
-    
+
     @Override
     public void setFolderStrategy(final FolderStrategyIF strategy) {
         this.folderStrategy = strategy;
