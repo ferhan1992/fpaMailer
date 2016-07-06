@@ -28,4 +28,7 @@ public interface FolderManagerIF {
     void loadContent(final Folder f);
     
     void setFolderStrategy(final FolderStrategyIF strategy);
+    
+    void setTopFolder(Folder folder);
+
 }

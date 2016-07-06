@@ -13,7 +13,7 @@ import java.io.File;
 public class FolderManager implements FolderManagerIF {
 
     //top Folder of the managed hierarchy
-    private final Folder topFolder;
+    private Folder topFolder;
     private FolderStrategyIF folderStrategy;
 
     /**
@@ -56,5 +56,10 @@ public class FolderManager implements FolderManagerIF {
     public void setFolderStrategy(final FolderStrategyIF strategy) {
         this.folderStrategy = strategy;
         loadContent(topFolder);
+    }
+    
+    @Override
+    public void setTopFolder(Folder folder) {
+        topFolder = folder;
     }
 }

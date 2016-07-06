@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,6 +9,7 @@ import de.bht.fpa.mail.gruppe15.model.appLogic.FolderStrategyIF;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
@@ -41,7 +42,6 @@ public class IMapFolderStrategy implements FolderStrategyIF {
                 } catch (MessagingException ex) {
                     Logger.getLogger(IMapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         }
     }

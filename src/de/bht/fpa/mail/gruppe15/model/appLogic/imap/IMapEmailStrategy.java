@@ -31,18 +31,22 @@ public class IMapEmailStrategy implements EmailStrategyIF {
 
     @Override
     public void loadEmails(Folder f) {
-        try {
-            javax.mail.Folder folder = store.getFolder(f.getName());
-            folder.open(javax.mail.Folder.READ_ONLY);
-            Message[] messages = folder.getMessages();
-            for (Message m : messages) {
-                Email email = IMapEmailConverter.convertMessage(m);
-                if (checkEmailFormat(email)) {
-                    f.addEmail(email);
+        if (f != null) {
+            try {
+                javax.mail.Folder folder = store.getFolder(f.getName());
+                if (folder != null) {
+                    folder.open(javax.mail.Folder.READ_ONLY);
+                    Message[] messages = folder.getMessages();
+                    for (Message m : messages) {
+                        Email email = IMapEmailConverter.convertMessage(m);
+                        if (checkEmailFormat(email)) {
+                            f.addEmail(email);
+                        }
+                    }
                 }
+            } catch (MessagingException ex) {
+                Logger.getLogger(IMapEmailStrategy.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (MessagingException ex) {
-            Logger.getLogger(IMapEmailStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

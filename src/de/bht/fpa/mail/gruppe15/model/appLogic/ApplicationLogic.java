@@ -2,6 +2,8 @@ package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapEmailStrategy;
 import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapFolderStrategy;
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLEmailStrategy;
+import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLFolderStrategy;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
@@ -42,9 +44,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
      */
     @Override
     public Folder getTopFolder() {
-        final Folder f;
-        f = folderManager.getTopFolder();
-        return f;
+        return folderManager.getTopFolder();
     }
 
     /**
@@ -93,6 +93,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void changeDirectory(final File file) {
         if (file != null) {
+            folderManager.setFolderStrategy(new XMLFolderStrategy());
+            emailManager.setEmailStrategy(new XMLEmailStrategy());
             folderManager = new FolderManager(file);
         }
     }
@@ -113,8 +115,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
         if (name != null) {
             final Account account;
             account = getAccount(name);
-            folderManager.setFolderStrategy(new IMapFolderStrategy(account));
-            emailManager.setEmailStrategy(new IMapEmailStrategy(account));
+                folderManager.setTopFolder(account.getTop());
+                folderManager.setFolderStrategy(new IMapFolderStrategy(account));
+                emailManager.setEmailStrategy(new IMapEmailStrategy(account));
         }
     }
 
