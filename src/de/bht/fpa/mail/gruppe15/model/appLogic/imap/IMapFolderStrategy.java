@@ -34,7 +34,7 @@ public class IMapFolderStrategy implements FolderStrategyIF {
         if (f != null) {
             if (f.getComponents().isEmpty()) {
                 try {
-                    for (javax.mail.Folder folder : store.getFolder(f.getPath()).list()) {
+                    for (javax.mail.Folder folder : store.getDefaultFolder().list()) {
                         Folder newFolder = new Folder(new File(folder.getName()), folder.list().length > 0);
                         newFolder.setPath(folder.getFullName());
                         f.addComponent(newFolder);

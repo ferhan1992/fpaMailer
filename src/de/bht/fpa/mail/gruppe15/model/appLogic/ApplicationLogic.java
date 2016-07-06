@@ -93,9 +93,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
     @Override
     public void changeDirectory(final File file) {
         if (file != null) {
+            folderManager.setTopFolder(new Folder(file, true));
             folderManager.setFolderStrategy(new XMLFolderStrategy());
             emailManager.setEmailStrategy(new XMLEmailStrategy());
-            folderManager = new FolderManager(file);
         }
     }
 
@@ -115,9 +115,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
         if (name != null) {
             final Account account;
             account = getAccount(name);
-                folderManager.setTopFolder(account.getTop());
-                folderManager.setFolderStrategy(new IMapFolderStrategy(account));
-                emailManager.setEmailStrategy(new IMapEmailStrategy(account));
+            folderManager.setTopFolder(account.getTop());
+            folderManager.setFolderStrategy(new IMapFolderStrategy(account));
+            emailManager.setEmailStrategy(new IMapEmailStrategy(account));
         }
     }
 

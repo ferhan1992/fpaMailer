@@ -32,6 +32,7 @@ public class IMapEmailStrategy implements EmailStrategyIF {
     @Override
     public void loadEmails(Folder f) {
         if (f != null) {
+            f.setContentLoaded();
             try {
                 javax.mail.Folder folder = store.getFolder(f.getName());
                 if (folder != null) {
