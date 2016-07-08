@@ -115,9 +115,15 @@ public class ApplicationLogic implements ApplicationLogicIF {
         if (name != null) {
             final Account account;
             account = getAccount(name);
+            File file = new File(account.getTop().getPath());
             folderManager.setTopFolder(account.getTop());
-            folderManager.setFolderStrategy(new IMapFolderStrategy(account));
-            emailManager.setEmailStrategy(new IMapEmailStrategy(account));
+            if (!file.exists()) {
+                folderManager.setFolderStrategy(new IMapFolderStrategy(account));
+                emailManager.setEmailStrategy(new IMapEmailStrategy(account));
+            } else {
+                folderManager.setFolderStrategy(new XMLFolderStrategy());
+                emailManager.setEmailStrategy(new XMLEmailStrategy());
+            }
         }
     }
 

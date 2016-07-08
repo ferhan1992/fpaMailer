@@ -66,12 +66,7 @@ public class AccountManager implements AccountManagerIF {
     }
 
     private boolean checkAccountExistence(final Account acc) {
-        for (Account account : accountList) {
-            if (account.getName().equals(acc.getName())) {
-                return false;
-            }
-        }
-        return true;
+        return accountList.stream().noneMatch((account) -> (account.getName().toLowerCase().equals(acc.getName().toLowerCase())));
     }
 
     /**

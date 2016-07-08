@@ -63,6 +63,10 @@ public class Folder extends Component implements Serializable {
     public void setContentLoaded() {
         contentLoaded = true;
     }
+    
+    public boolean getContentLoaded() {
+        return contentLoaded;
+    }
 
     @Override
     public String toString() {

@@ -514,6 +514,6 @@ public class MainWindowController implements Initializable {
         appLogic.getAllAccounts().stream().filter((account) -> (account != null)).forEach((final String account) -> {
             menuAccOpen.getItems().add(new MenuItem(account));
             menuAccEdit.getItems().add(new MenuItem(account));
-        });    
+        });
     }
 }

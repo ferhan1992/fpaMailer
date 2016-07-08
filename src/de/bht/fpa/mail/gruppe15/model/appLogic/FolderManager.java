@@ -55,7 +55,6 @@ public class FolderManager implements FolderManagerIF {
     @Override
     public void setFolderStrategy(final FolderStrategyIF strategy) {
         this.folderStrategy = strategy;
-        loadContent(topFolder);
     }
     
     @Override

@@ -9,6 +9,8 @@ import de.bht.fpa.mail.gruppe15.model.appLogic.EmailStrategyIF;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Message;
@@ -32,17 +34,20 @@ public class IMapEmailStrategy implements EmailStrategyIF {
     @Override
     public void loadEmails(Folder f) {
         if (f != null) {
-            f.setContentLoaded();
             try {
-                javax.mail.Folder folder = store.getFolder(f.getName());
-                if (folder != null) {
-                    folder.open(javax.mail.Folder.READ_ONLY);
-                    Message[] messages = folder.getMessages();
-                    for (Message m : messages) {
-                        Email email = IMapEmailConverter.convertMessage(m);
-                        if (checkEmailFormat(email)) {
-                            f.addEmail(email);
+                if (store.getFolder(f.getPath()).exists() && !f.getContentLoaded()) {
+                    javax.mail.Folder folder = store.getFolder(f.getPath());
+                    if (folder != null) {
+                        folder.open(javax.mail.Folder.READ_ONLY);
+                        Message[] messages = folder.getMessages();
+                        for (Message m : messages) {
+                            Email email = IMapEmailConverter.convertMessage(m);
+                            if (checkEmailFormat(email)) {
+                                f.addEmail(email);
+                            }
                         }
+                        folder.close(false);
+                        f.setContentLoaded();
                     }
                 }
             } catch (MessagingException ex) {

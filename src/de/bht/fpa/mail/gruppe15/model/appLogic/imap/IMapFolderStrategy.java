@@ -9,7 +9,6 @@ import de.bht.fpa.mail.gruppe15.model.appLogic.FolderStrategyIF;
 import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
@@ -34,10 +33,24 @@ public class IMapFolderStrategy implements FolderStrategyIF {
         if (f != null) {
             if (f.getComponents().isEmpty()) {
                 try {
-                    for (javax.mail.Folder folder : store.getDefaultFolder().list()) {
-                        Folder newFolder = new Folder(new File(folder.getName()), folder.list().length > 0);
-                        newFolder.setPath(folder.getFullName());
-                        f.addComponent(newFolder);
+                    javax.mail.Folder topFolder = store.getDefaultFolder();
+                    if (!f.getName().contains(account.getName())) {
+                        topFolder = store.getFolder(f.getPath());
+                    }
+                    for (javax.mail.Folder folder : topFolder.list()) {
+                        if (folder != null && !folder.getName().isEmpty()) {
+                            if (folder.getName().contains("Gmail")) {
+                                for (javax.mail.Folder gmailfolder : folder.list()) {
+                                    Folder newFolder = new Folder(new File(gmailfolder.getFullName()), gmailfolder.list().length > 0);
+                                    newFolder.setPath(gmailfolder.getFullName());
+                                    f.addComponent(newFolder);
+                                }
+                            } else {
+                                Folder newFolder = new Folder(new File(folder.getFullName()), folder.list().length > 0);
+                                newFolder.setPath(folder.getFullName());
+                                f.addComponent(newFolder);
+                            }
+                        }
                     }
                 } catch (MessagingException ex) {
                     Logger.getLogger(IMapFolderStrategy.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,4 +58,5 @@ public class IMapFolderStrategy implements FolderStrategyIF {
             }
         }
     }
+
 }

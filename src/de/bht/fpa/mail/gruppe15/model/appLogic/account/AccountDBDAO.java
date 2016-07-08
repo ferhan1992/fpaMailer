@@ -1,8 +1,6 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic.account;
 
 import de.bht.fpa.mail.gruppe15.model.data.Account;
-import de.bht.fpa.mail.gruppe15.model.data.Folder;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
