@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -380,6 +381,13 @@ public class MainWindowController implements Initializable {
         if (target != null) {
             final Folder f;
             f = (Folder) target.getValue();
+            List<String> allAccounts = appLogic.getAllAccounts();
+            for (String accName : allAccounts){
+                Account acc = appLogic.getAccount(accName);
+                if (acc.getTop().toString().equals(target.getValue().getName())){
+                    return;
+                }
+            }
             appLogic.loadEmails(f);
             resetMailDetails();
             emailList.addAll(f.getEmails());
