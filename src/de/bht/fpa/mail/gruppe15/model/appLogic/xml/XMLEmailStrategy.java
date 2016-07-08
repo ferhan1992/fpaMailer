@@ -8,7 +8,8 @@ import java.io.FileFilter;
 import javax.xml.bind.JAXB;
 
 /**
- *
+ * This class manages the email strategy for XML Emails.
+ * 
  * @author Ferhan Kaplanseren
  * @author Ömür Düner
  */

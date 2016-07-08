@@ -93,7 +93,12 @@ public class EmailManager implements EmailManagerIF {
         }
         return null;
     }
-
+    
+     /**
+     * Method to set the email strategy
+     *
+     * @param strategy the strategy which shall be used by the manager..
+     */ 
     @Override
     public void setEmailStrategy(final EmailStrategyIF strategy) {
         this.emailStrategy = strategy;

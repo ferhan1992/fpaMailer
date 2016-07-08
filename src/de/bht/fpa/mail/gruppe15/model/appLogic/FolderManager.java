@@ -51,12 +51,22 @@ public class FolderManager implements FolderManagerIF {
     public Folder getTopFolder() {
         return topFolder;
     }
-
+    
+     /**
+     * Method to set the folder strategy
+     *
+     * @param strategy the strategy which shall be used by the manager..
+     */ 
     @Override
     public void setFolderStrategy(final FolderStrategyIF strategy) {
         this.folderStrategy = strategy;
     }
     
+    /**
+     * Set the root folder.
+     *
+     * @param folder the folder which shall be set as the new top folder.
+     */
     @Override
     public void setTopFolder(final Folder folder) {
         topFolder = folder;

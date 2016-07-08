@@ -25,9 +25,19 @@ public interface FolderManagerIF {
      * should be loaded
      */
     void loadContent(final Folder f);
-    
+
+    /**
+     * Method to set the folder strategy
+     *
+     * @param strategy the strategy which shall be used by the manager..
+     */
     void setFolderStrategy(final FolderStrategyIF strategy);
-    
+
+    /**
+     * Set the root folder.
+     *
+     * @param folder the folder which shall be set as the new top folder.
+     */
     void setTopFolder(final Folder folder);
 
 }

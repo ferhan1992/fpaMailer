@@ -110,6 +110,13 @@ public class ApplicationLogic implements ApplicationLogicIF {
         emailManager.saveEmails(selectedDir);
     }
 
+    /**
+     * Sets a selected account as the new working account, and initializes the
+     * folder manager with the top Folder of the account.
+     *
+     * @param name name of the account which should be set as the current
+     * working account.
+     */
     @Override
     public void openAccount(final String name) {
         if (name != null) {
@@ -128,6 +135,9 @@ public class ApplicationLogic implements ApplicationLogicIF {
         }
     }
 
+    /**
+     * @return a list of all account names.
+     */
     @Override
     public List<String> getAllAccounts() {
         final List<String> allAccounts;
@@ -138,11 +148,22 @@ public class ApplicationLogic implements ApplicationLogicIF {
         return allAccounts;
     }
 
+    /**
+     * @return account with the given name. If no account with this name exists,
+     * it returns null.
+     * @param name name of the account
+     */
     @Override
     public Account getAccount(final String name) {
         return accountManager.getAccount(name);
     }
 
+    /**
+     * Saves the given Account in the datastore.
+     *
+     * @param account the account that should be saved
+     * @return true if an account with this name did not exist.
+     */
     @Override
     public boolean saveAccount(final Account account) {
         if (account != null) {
@@ -152,6 +173,11 @@ public class ApplicationLogic implements ApplicationLogicIF {
         return false;
     }
 
+    /**
+     * Updates the given Account in the datastore.
+     *
+     * @param account the account that should be updated
+     */
     @Override
     public void updateAccount(final Account account) {
         accountManager.updateAccount(account);

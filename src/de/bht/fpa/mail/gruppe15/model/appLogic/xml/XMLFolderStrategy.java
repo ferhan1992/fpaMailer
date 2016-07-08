@@ -7,6 +7,7 @@ import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
 
 /**
+ * This class manages the folder strategy for local Folders.
  *
  * @author Ferhan Kaplanseren
  * @author Ömür Düner

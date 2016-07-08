@@ -14,7 +14,9 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class of the New Account Window
  *
- * @author FerhanKaplanseren
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
+ *
  */
 public class AccountWindowController implements Initializable {
 
@@ -34,8 +36,15 @@ public class AccountWindowController implements Initializable {
     private TextField passwordInput;
 
     private final MainWindowController mainWindowController;
+    /* Account used by the Controller. */
     private final Account account;
 
+    /**
+     * FXML Controller class for the account window.
+     *
+     * @author Ferhan Kaplanseren
+     * @author Ömür Düner
+     */
     AccountWindowController(final Account account, final MainWindowController aThis) {
         mainWindowController = aThis;
         this.account = account;
@@ -69,6 +78,12 @@ public class AccountWindowController implements Initializable {
         close(buttonCancel);
     }
 
+    /**
+     * Method managing the event occuring when pressing the button.
+     *
+     * @param e ActionEvent.
+     *
+     */
     private void execButtonEvent(final ActionEvent e) {
         if (nameInput.getText().trim().isEmpty() || hostInput.getText().trim().isEmpty() || usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty()) {
             errorLabel.setText("All textfields must contain data!");
@@ -103,10 +118,16 @@ public class AccountWindowController implements Initializable {
         }
     }
 
+    /**
+     * Method to configure the GUI for the new account event.
+     */
     private void configureNewAccount() {
         buttonExecute.setText("Save");
     }
 
+    /**
+     * Method to configure the GUI for the edit account event.
+     */
     private void configureEditAccount() {
         nameInput.setText(account.getName());
         hostInput.setText(account.getHost());

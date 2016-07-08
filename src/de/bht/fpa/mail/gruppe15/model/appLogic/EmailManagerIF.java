@@ -37,6 +37,11 @@ public interface EmailManagerIF {
      */
     List<Email> search(final String input);
     
+    /**
+     * Method to set the email strategy
+     *
+     * @param strategy the strategy which shall be used by the manager..
+     */
     void setEmailStrategy(final EmailStrategyIF strategy);
 
 }

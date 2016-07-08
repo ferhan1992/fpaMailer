@@ -488,7 +488,13 @@ public class MainWindowController implements Initializable {
     public ApplicationLogicIF getAppLogic() {
         return this.appLogic;
     }
-
+    
+    /**
+     * Method which loads the FXML for the account window and generates a new
+     * stage for the account window.
+     * 
+     * @param string String.
+     */
     private void showAccount(String string) {
         if (string != null) {
             final Stage AccountStage;
@@ -515,7 +521,10 @@ public class MainWindowController implements Initializable {
             }
         }
     }
-
+    
+    /**
+     * Method to reload the MenuItems of the account Menu.
+     */
     public void refreshAccountMenu() {
         menuAccOpen.getItems().clear();
         menuAccEdit.getItems().clear();

@@ -15,8 +15,11 @@ import javax.mail.MessagingException;
 import javax.mail.Store;
 
 /**
+ * This class manages the folder strategy for IMAP Folders.
  *
- * @author Admin
+ * @author Ferhan Kaplanseren
+ * @author Ömür Düner
+ * 
  */
 public class IMapFolderStrategy implements FolderStrategyIF {
 
@@ -27,7 +30,14 @@ public class IMapFolderStrategy implements FolderStrategyIF {
         this.account = account;
         store = IMapConnectionHelper.connect(account);
     }
-
+    
+    /**
+     * Loads all relevant content in the directory path of a folder into the
+     * folder.
+     *
+     * @param f the folder into which the content of the corresponding directory
+     * should be loaded
+     */
     @Override
     public void loadContent(final Folder f) {
         if (f != null) {
