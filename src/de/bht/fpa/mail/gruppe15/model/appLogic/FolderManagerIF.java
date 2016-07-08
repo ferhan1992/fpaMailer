@@ -1,6 +1,5 @@
 package de.bht.fpa.mail.gruppe15.model.appLogic;
 
-import de.bht.fpa.mail.gruppe15.model.appLogic.FolderStrategyIF;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 
 /*
@@ -29,6 +28,6 @@ public interface FolderManagerIF {
     
     void setFolderStrategy(final FolderStrategyIF strategy);
     
-    void setTopFolder(Folder folder);
+    void setTopFolder(final Folder folder);
 
 }

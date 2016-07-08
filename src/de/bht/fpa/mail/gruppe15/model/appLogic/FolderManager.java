@@ -58,7 +58,7 @@ public class FolderManager implements FolderManagerIF {
     }
     
     @Override
-    public void setTopFolder(Folder folder) {
+    public void setTopFolder(final Folder folder) {
         topFolder = folder;
     }
 }

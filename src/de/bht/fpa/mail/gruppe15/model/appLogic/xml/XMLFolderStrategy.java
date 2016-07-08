@@ -48,9 +48,9 @@ public class XMLFolderStrategy implements FolderStrategyIF {
      * @param fi the file which shall be checked for subdirectorys.
      * @return boolean
      */
-    private boolean hasSubDir(File fi) {
+    private boolean hasSubDir(final File fi) {
         if (fi != null) {
-            for (File x : fi.listFiles()) {
+            for (final File x : fi.listFiles()) {
                 if (x.isDirectory()) {
                     return true;
                 }

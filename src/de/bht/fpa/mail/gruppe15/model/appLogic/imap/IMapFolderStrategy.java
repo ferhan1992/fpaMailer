@@ -29,7 +29,7 @@ public class IMapFolderStrategy implements FolderStrategyIF {
     }
 
     @Override
-    public void loadContent(Folder f) {
+    public void loadContent(final Folder f) {
         if (f != null) {
             if (f.getComponents().isEmpty()) {
                 try {

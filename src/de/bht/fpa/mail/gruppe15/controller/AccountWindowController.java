@@ -43,9 +43,12 @@ public class AccountWindowController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(final URL url, final ResourceBundle rb) {
         buttonCancel.setOnAction((ActionEvent e) -> cancelButtonEvent());
         buttonExecute.setOnAction((ActionEvent e) -> execButtonEvent(e));
         if (account == null) {
@@ -66,7 +69,7 @@ public class AccountWindowController implements Initializable {
         close(buttonCancel);
     }
 
-    private void execButtonEvent(ActionEvent e) {
+    private void execButtonEvent(final ActionEvent e) {
         if (nameInput.getText().trim().isEmpty() || hostInput.getText().trim().isEmpty() || usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty()) {
             errorLabel.setText("All textfields must contain data!");
         } else {

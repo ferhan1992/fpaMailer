@@ -27,10 +27,11 @@ public class XMLEmailStrategy implements EmailStrategyIF {
             if (f.getEmails().isEmpty()) {
                 final File file;
                 file = new File(f.getPath());
-                FileFilter filter;
-                filter = (File filteredfile) -> filteredfile.getName().endsWith(".xml");
+                final FileFilter filter;
+                filter = (final File filteredfile) -> filteredfile.getName().endsWith(".xml");
                 for (final File fi : file.listFiles(filter)) {
-                    final Email email = JAXB.unmarshal(fi, Email.class);
+                    final Email email;
+                    email = JAXB.unmarshal(fi, Email.class);
                     if (checkEmailFormat(email)) {
                         f.addEmail(email);
                     }

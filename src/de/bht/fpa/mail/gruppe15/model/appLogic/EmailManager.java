@@ -2,8 +2,6 @@ package de.bht.fpa.mail.gruppe15.model.appLogic;
 
 import de.bht.fpa.mail.gruppe15.controller.MainWindowController;
 import de.bht.fpa.mail.gruppe15.model.appLogic.xml.XMLEmailStrategy;
-import de.bht.fpa.mail.gruppe15.model.appLogic.imap.IMapEmailStrategy;
-import de.bht.fpa.mail.gruppe15.model.data.Account;
 import de.bht.fpa.mail.gruppe15.model.data.Email;
 import de.bht.fpa.mail.gruppe15.model.data.Folder;
 import java.io.File;
@@ -55,17 +53,17 @@ public class EmailManager implements EmailManagerIF {
     public void saveEmails(final File selectedDir) {
         if (selectedDir != null) {
             try {
-                JAXBContext jaxbContext;
+                final JAXBContext jaxbContext;
                 jaxbContext = JAXBContext.newInstance(Email.class);
-                Marshaller jaxbMarshaller;
+                final Marshaller jaxbMarshaller;
                 jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 int i = 0;
-                for (Email email : selectedFolder.getEmails()) {
+                for (final Email email : selectedFolder.getEmails()) {
                     i++;
                     jaxbMarshaller.marshal(email, new File(selectedDir.getAbsolutePath() + "/mail" + i + ".xml"));
                 }
-            } catch (JAXBException ex) {
+            } catch (final JAXBException ex) {
                 Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -81,8 +79,9 @@ public class EmailManager implements EmailManagerIF {
     @Override
     public List<Email> search(final String input) {
         if (input != null) {
-            final ArrayList<Email> filteredMails = new ArrayList<>();
-            selectedFolder.getEmails().stream().filter((Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
+            final ArrayList<Email> filteredMails;
+            filteredMails = new ArrayList<>();
+            selectedFolder.getEmails().stream().filter((final Email email) -> email.getSubject().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getText().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getReceived().toLowerCase().contains(input.trim().toLowerCase())
                     || email.getSent().toLowerCase().contains(input.trim().toLowerCase())

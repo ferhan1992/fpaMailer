@@ -115,7 +115,8 @@ public class ApplicationLogic implements ApplicationLogicIF {
         if (name != null) {
             final Account account;
             account = getAccount(name);
-            File file = new File(account.getTop().getPath());
+            final File file;
+            file = new File(account.getTop().getPath());
             folderManager.setTopFolder(account.getTop());
             if (!file.exists()) {
                 folderManager.setFolderStrategy(new IMapFolderStrategy(account));

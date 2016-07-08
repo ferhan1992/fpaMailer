@@ -12,8 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class defines a dao class, that stores Account objects as
- * serialized data in a given file.
+ * This class defines a dao class, that stores Account objects as serialized
+ * data in a given file.
+ *
  * @author Simone Strippgen
  */
 public class AccountFileDAO implements AccountDAOIF {
@@ -29,18 +30,19 @@ public class AccountFileDAO implements AccountDAOIF {
 
     @Override
     public List<Account> getAllAccounts() {
-        List<Account> list = new ArrayList<>();
+        final List<Account> list = new ArrayList<>();
         Account acc = null;
         try {
-            FileInputStream fileInput = new FileInputStream(ACCOUNT_FILE);
-            try (ObjectInputStream is = new ObjectInputStream(fileInput)) {
+            final FileInputStream fileInput;
+            fileInput = new FileInputStream(ACCOUNT_FILE);
+            try (final ObjectInputStream is = new ObjectInputStream(fileInput)) {
                 acc = (Account) is.readObject();
                 while (acc != null) {
                     list.add(acc);
                     acc = (Account) is.readObject();
                 }
             }
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (final IOException | ClassNotFoundException ex) {
 //            do nothing
         }
         return list;
@@ -49,7 +51,8 @@ public class AccountFileDAO implements AccountDAOIF {
     @Override
     public Account saveAccount(final Account acc) {
         if (acc != null) {
-            List<Account> accounts = getAllAccounts();
+            final List<Account> accounts;
+            accounts = getAllAccounts();
             accounts.add(acc);
             saveAccounts(accounts);
         }
@@ -59,7 +62,8 @@ public class AccountFileDAO implements AccountDAOIF {
     @Override
     public boolean updateAccount(final Account acc) {
         if (acc != null) {
-            List<Account> accounts = getAllAccounts();
+            final List<Account> accounts;
+            accounts = getAllAccounts();
             remove(acc.getName(), accounts);
             accounts.add(acc);
             saveAccounts(accounts);
@@ -69,24 +73,29 @@ public class AccountFileDAO implements AccountDAOIF {
 
     private void saveAccounts(final List<Account> accList) {
         try {
-            File accountFile = ACCOUNT_FILE;
+            final File accountFile;
+            accountFile = ACCOUNT_FILE;
             System.out.println(accountFile);
-            boolean deleted = accountFile.delete();
-            FileOutputStream fileOutput = new FileOutputStream(accountFile);
-            try (ObjectOutputStream os = new ObjectOutputStream(fileOutput)) {
-                for (Account a : accList) {
+            final boolean deleted;
+            deleted = accountFile.delete();
+            final FileOutputStream fileOutput;
+            fileOutput = new FileOutputStream(accountFile);
+            try (final ObjectOutputStream os = new ObjectOutputStream(fileOutput)) {
+                for (final Account a : accList) {
                     os.writeObject(a);
                 }
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             ex.printStackTrace();
         }
     }
 
     private void remove(final String name, final List<Account> list) {
-        Iterator<Account> it = list.iterator();
+        final Iterator<Account> it;
+        it = list.iterator();
         while (it.hasNext()) {
-            Account acc = it.next();
+            final Account acc;
+            acc = it.next();
             if (acc.getName().equals(name)) {
                 it.remove();
                 return;

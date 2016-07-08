@@ -27,13 +27,14 @@ public class IMapEmailConverter {
     /**
      * Converts a javax {@link javax.mail.Message} to an {@link Email}.
      *
-     * @param javaMailMessage the {@link javax.mail.Message} to convert
+     * @param message the {@link javax.mail.Message} to convert
      * @return the converted {@link Email}, or <code>null</code> if conversion
      * failed.
      */
-    public static Email convertMessage(Message message) {
+    public static Email convertMessage(final Message message) {
         try {
-            Email mail = new Email();
+            final Email mail;
+            mail = new Email();
             mail.setSubject(message.getSubject());
             mail.setReceived(message.getReceivedDate());
             mail.setSent(message.getSentDate());
@@ -44,14 +45,14 @@ public class IMapEmailConverter {
             convertRecipients(mail, message);
             return mail;
 
-        } catch (MessagingException ex) {
+        } catch (final MessagingException ex) {
             Logger.getLogger(IMapEmailStrategy.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
-    private static Email.Importance convertImportance(Message javaMailMessage) throws MessagingException {
+    private static Email.Importance convertImportance(final Message javaMailMessage) throws MessagingException {
         Email.Importance handleImportanceBasedOnXPriority = handleImportanceBasedOnXPriority(javaMailMessage);
         if (handleImportanceBasedOnXPriority != null) {
 //            System.out.println("ImportanceBasedOnXPriority");
@@ -72,14 +73,15 @@ public class IMapEmailConverter {
         return Email.Importance.NORMAL;
     }
 
-    private static Email.Importance handleImportanceBasedOnXMSMailPriority(Message javaMailMessage)
+    private static Email.Importance handleImportanceBasedOnXMSMailPriority(final Message javaMailMessage)
             throws MessagingException {
-        String[] header = javaMailMessage.getHeader("X-MSMail-Priority");
+        final String[] header;
+        header = javaMailMessage.getHeader("X-MSMail-Priority");
         if (header == null) {
             return null;
         }
 
-        for (String entry : header) {
+        for (final String entry : header) {
             if (entry.equals("High")) {
                 return Email.Importance.HIGH;
             }
@@ -93,24 +95,30 @@ public class IMapEmailConverter {
         return null;
     }
 
-    private static Email.Importance handleImportanceBasedOnXPriority(Message javaMailMessage)
+    private static Email.Importance handleImportanceBasedOnXPriority(final Message javaMailMessage)
             throws MessagingException {
 
-        Pattern X_PRIORITY_VALUE_PATTERN = Pattern.compile("(\\d).*");
-        int X_PRIORITY_HIGH_END = 4;
-        int X_PRIORITY_HIGH_START = 2;
-        String[] header = javaMailMessage.getHeader("X-Priority");
+        final Pattern X_PRIORITY_VALUE_PATTERN;
+        X_PRIORITY_VALUE_PATTERN = Pattern.compile("(\\d).*");
+        final int X_PRIORITY_HIGH_END;
+        X_PRIORITY_HIGH_END = 4;
+        final int X_PRIORITY_HIGH_START;
+        X_PRIORITY_HIGH_START = 2;
+        final String[] header;
+        header = javaMailMessage.getHeader("X-Priority");
         if (header
                 == null) {
             return null;
         }
-        for (String entry : header) {
-            Matcher matcher = X_PRIORITY_VALUE_PATTERN.matcher(entry);
+        for (final String entry : header) {
+            final Matcher matcher;
+            matcher = X_PRIORITY_VALUE_PATTERN.matcher(entry);
             if (!matcher.matches()) {
                 continue;
             }
 
-            Integer flag = Integer.valueOf(matcher.group(1));
+            final Integer flag;
+            flag = Integer.valueOf(matcher.group(1));
             if (flag < X_PRIORITY_HIGH_START) {
                 return Email.Importance.HIGH;
             }
@@ -125,13 +133,14 @@ public class IMapEmailConverter {
         return null;
     }
 
-    private static Email.Importance handleImportance(Message javaMailMessage) throws MessagingException {
-        String[] header = javaMailMessage.getHeader("Importance");
+    private static Email.Importance handleImportance(final Message javaMailMessage) throws MessagingException {
+        final String[] header;
+        header = javaMailMessage.getHeader("Importance");
         if (header == null) {
             return null;
         }
 
-        for (String entry : header) {
+        for (final String entry : header) {
             if (entry.equals("high")) {
                 return Email.Importance.HIGH;
             }
@@ -145,17 +154,17 @@ public class IMapEmailConverter {
         return null;
     }
 
-    private static String convertText(Message message) {
-        Object cont;
+    private static String convertText(final Message message) {
+        final Object cont;
         try {
             cont = message.getContent();
             if (cont instanceof String) {
                 return ((String) cont);
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             Logger.getLogger(IMapEmailStrategy.class
                     .getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException ex) {
+        } catch (final MessagingException ex) {
             Logger.getLogger(IMapEmailStrategy.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
@@ -163,17 +172,16 @@ public class IMapEmailConverter {
         return "";
     }
 
-    private static void convertContent(Message javaMailMessage, Email email) throws MessagingException {
+    private static void convertContent(final Message javaMailMessage, final Email email) throws MessagingException {
         try {
             handleContent(javaMailMessage.getContent(), null, email);
-
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             Logger.getLogger(IMapEmailStrategy.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static void handleContent(Object content, BodyPart bodyPart, Email email) throws MessagingException {
+    private static void handleContent(final Object content, final BodyPart bodyPart, final Email email) throws MessagingException {
         if (content instanceof String) {
             email.setText((String) content);
         } else if (content instanceof Multipart) {
@@ -183,55 +191,59 @@ public class IMapEmailConverter {
         }
     }
 
-    private static void handleInputStream(InputStream content, BodyPart bodyPart, Email email) {
-        String text = email.getText();
+    private static void handleInputStream(final InputStream content, final BodyPart bodyPart, final Email email) {
+        String text;
+        text = email.getText();
         text = text + "\n\n ------ Attachements wurden entfernt!! ------ ";
         email.setText(text);
     }
 
-    private static void handleMultipart(Multipart content, Email email) throws MessagingException {
+    private static void handleMultipart(final Multipart content, final Email email) throws MessagingException {
         for (int i = 0; i < content.getCount(); i++) {
             try {
-                BodyPart bodyPart = content.getBodyPart(i);
+                final BodyPart bodyPart;
+                bodyPart = content.getBodyPart(i);
                 handleContent(bodyPart.getContent(), bodyPart, email);
 
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 Logger.getLogger(IMapEmailStrategy.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private static void convertRecipients(Email mail, Message message) {
+    private static void convertRecipients(final Email mail, final Message message) {
         try {
 //            System.out.println("Set To-Recipients");
             setRecipients(message.getRecipients(Message.RecipientType.TO), mail.getReceiverListTo());
 //            System.out.println("Set CC-Recipients");
             setRecipients(message.getRecipients(Message.RecipientType.CC), mail.getReceiverListCC());
-        } catch (MessagingException ex) {
+        } catch (final MessagingException ex) {
             Logger.getLogger(IMapEmailStrategy.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static void setRecipients(Address[] recipients, ArrayList<String> receiverList) {
+    private static void setRecipients(final Address[] recipients, final ArrayList<String> receiverList) {
         if (recipients == null) {
 //            System.out.println("No recipients!");
             return;
         }
-        for (Address address : recipients) {
-            String addr = getAddress(address);
+        for (final Address address : recipients) {
+            final String addr;
+            addr = getAddress(address);
             if (addr != null) {
                 receiverList.add(addr);
             }
         }
     }
 
-    private static String getAddress(Address address) {
+    private static String getAddress(final Address address) {
         if (!(address instanceof InternetAddress)) {
             return null;
         }
-        InternetAddress internetAddress = (InternetAddress) address;
+        final InternetAddress internetAddress;
+        internetAddress = (InternetAddress) address;
         return internetAddress.getAddress();
     }
 }
