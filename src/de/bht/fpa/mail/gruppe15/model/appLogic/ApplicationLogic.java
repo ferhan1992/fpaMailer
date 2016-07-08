@@ -24,7 +24,7 @@ public class ApplicationLogic implements ApplicationLogicIF {
     private FolderManagerIF folderManager;
     private final AccountManagerIF accountManager;
     /* Variable of type File holding the root path */
-    private static final File ROOT_PATH = new File(System.getProperty("user.dir"));
+    private static final File ROOT_PATH = new File(System.getProperty("user.home"));
 
     /**
      * Constructor of the Class, initializing new instances of FolderManager and
